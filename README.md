@@ -9,4 +9,4 @@ ou git clone et ouvre index
 - Contact
 
 ## Technologies
-HTML, CSS
+HTML, CSS, JS
