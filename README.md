@@ -1,12 +1,12 @@
-# My CV - Elio SPAETH
+[Lien](https://laarbre.github.io/myself/)
 
-## Quick Start
+![Aperçu du site](./screenshot.png)
 
-Accessible par le lien https://laarbre.github.io/myself/ en ligne
+## Contenu
+- Parcours et formation
+- Compétences techniques
+- Projets réalisés
+- Contact
 
-## Attribution & License
-
-- Created by "LaArbre" other name are "Le chat de l'encre" or "Le chat" — GitHub: [LaArbre](https://github.com/LaArbre).
-- Code is open-source and contributions are welcome; open a pull request with improvements or new effects.
-- If you reuse this in your own projects, credit “LaArbre / <https://github.com/LaArbre>” and link back to the original repository.
-- Licensed under the [MIT License](./LICENSE).
+## Technologies
+HTML, CSS
