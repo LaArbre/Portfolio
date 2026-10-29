@@ -1,6 +1,6 @@
+## Accès 
 [Lien](https://laarbre.github.io/myself/)
-
-![Aperçu du site](./screenshot.png)
+ou git clone et ouvre index
 
 ## Contenu
 - Parcours et formation
