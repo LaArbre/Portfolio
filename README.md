@@ -1,6 +1,6 @@
 ## Accès 
-[Lien](https://laarbre.github.io/myself/)
-ou git clone et ouvre index
+- [Lien](https://laarbre.github.io/myself/)
+- Git clone et ouvre index.html
 
 ## Contenu
 - Parcours et formation
@@ -9,4 +9,6 @@ ou git clone et ouvre index
 - Contact
 
 ## Technologies
-HTML, CSS, JS
+- HTML
+- CSS
+- JS
