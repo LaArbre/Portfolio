@@ -33,13 +33,14 @@
     box.className = "page-info " + (pages === 1 ? "is-ok" : "is-warn");
     box.innerHTML = pages === 1
       ? `${CV.CHECK}<span>Tient sur <strong>une page</strong> A4</span>`
-      : `<span class="dot-warn" aria-hidden="true">!</span><span>Environ <strong>${pages} pages</strong> : décochez quelques éléments ou masquez les détails pour revenir à une page.</span>`;
+      : `<span class="dot-warn" aria-hidden="true"><span class="optique">!</span></span><span>Environ <strong>${pages} pages</strong> : décochez quelques éléments ou masquez les détails pour revenir à une page.</span>`;
   }
 
   function rafraichir() {
     CV.updatePreviews();
     resume();
     infoPages();
+    CV.optique();
   }
 
   /* ---------- Actions ---------- */

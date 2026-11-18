@@ -21,6 +21,15 @@
   --font: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --serif: "Fraunces", Georgia, "Times New Roman", serif;
   --topbar-h: 76px;
+  /* Échelle d'espacements : toujours utiliser ces valeurs */
+  --e-1: 4px;
+  --e-2: 8px;
+  --e-3: 12px;
+  --e-4: 16px;
+  --e-5: 24px;
+  --e-6: 32px;
+  --e-7: 48px;
+  --e-8: 64px;
   color-scheme: light;
 }
 
@@ -50,14 +59,20 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+/* "clip" coupe ce qui dépasse sur les côtés sans empêcher les éléments collants (sticky) */
+html {
+  -webkit-text-size-adjust: 100%; overflow-x: clip;
+  /* La place de la barre de défilement est toujours réservée :
+     rien ne se décale quand la page devient assez longue pour défiler */
+  scrollbar-gutter: stable;
+}
 body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
   font: 16px/1.55 var(--font);
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 a { color: inherit; }
 h1, h2, h3 { margin: 0; line-height: 1.15; }
@@ -78,12 +93,16 @@ p { margin: 0; }
 .btn-primary { background: var(--ink); color: var(--bg); }
 .btn-primary:hover { background: var(--accent); color: var(--accent-ink); }
 .btn-ghost { background: transparent; color: var(--ink); border-color: var(--line); }
-.btn-ghost:hover { border-color: var(--ink); }
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
 .btn-sm { padding: 7px 12px; font-size: 13px; }
 .btn-lg { padding: 15px 24px; font-size: 16px; }
 .btn-block { width: 100%; }
 .link-btn { background: none; border: 0; padding: 0; color: var(--muted); font: inherit; text-decoration: underline; cursor: pointer; }
 .link-btn:hover { color: var(--ink); }
+
+/* Centrage optique (voir CV.optique dans etat.js) */
+.optique { display: inline-block; line-height: 1; }
+.optique.optique-multi { line-height: inherit; }
 
 /* ---------- Textes ---------- */
 .kicker {
@@ -92,17 +111,79 @@ p { margin: 0; }
 .lead { color: var(--muted); font-size: 17px; max-width: 60ch; }
 
 /* ---------- Mise en page des pages ---------- */
-.page { max-width: 1320px; margin: 0 auto; padding: 44px 32px 80px; }
-.step-head { margin-bottom: 34px; }
-.step-head h1 { font: 600 clamp(32px, 4vw, 48px)/1.05 var(--serif); letter-spacing: -.015em; margin: 10px 0 12px; }
-.step-nav { display: flex; justify-content: space-between; gap: 12px; padding-top: 26px; margin-top: 10px; border-top: 1px solid var(--line); }
+.page { max-width: 1320px; margin: 0 auto; padding: var(--e-7) var(--e-6) var(--e-8); }
+.step-head { margin-bottom: var(--e-7); }
+.step-head h1 { font: 600 clamp(32px, 4vw, 48px)/1.05 var(--serif); letter-spacing: -.015em; margin: var(--e-3) 0 var(--e-4); }
+/* Précédent / Suivant : toujours visibles, collés en bas de l'écran */
+.step-nav {
+  position: sticky; bottom: 0; z-index: 15;
+  display: flex; justify-content: space-between; align-items: center; gap: var(--e-3);
+  margin-top: var(--e-7);
+  padding: var(--e-4) 0 max(var(--e-4), env(safe-area-inset-bottom));
+}
+/* Fond flouté sur toute la largeur de l'écran (pas seulement la colonne) */
+.step-nav::before {
+  content: ""; position: absolute; inset: 0 -100vmax; z-index: -1;
+  background: color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid var(--line);
+}
+/* La barre est le dernier élément : pas de marge vide sous elle */
+.page:has(.step-nav) { padding-bottom: 0; }
 
 @media (max-width: 640px) {
-  .page { padding: 28px 16px 96px; }
+  .page { padding: var(--e-5) var(--e-4) var(--e-7); }
   .lead { font-size: 16px; }
   .step-nav .btn { flex: 1; }
 }
 
+/* =========================================================
+   CHARGEMENT
+   Pendant que les polices arrivent et que le JS construit la page,
+   le contenu est invisible (les barres, elles, restent affichées et
+   immobiles). Puis tout le contenu apparaît d'un seul fondu.
+   ========================================================= */
+html { background: var(--bg); }
+.chargement main > :not(.step-nav):not(.workspace-main),
+.chargement .workspace-main > :not(.step-nav) {
+  opacity: 0;
+  /* filet de sécurité : si le JS ne répond pas, le contenu s'affiche quand même */
+  animation: secours 0s 2.5s forwards;
+}
+@keyframes secours { to { opacity: 1; } }
+/* Pendant la construction, la zone de contenu occupe déjà tout l'écran :
+   la barre Précédent / Suivant est en bas dès le premier affichage */
+.chargement #contenu-etape, .chargement .final { min-height: 120vh; }
+/* Aucune transition ni animation tant que la page se construit */
+.chargement *, .chargement *::before, .chargement *::after { transition: none !important; }
+.chargement main > * * { animation-play-state: paused !important; }
+
+/* Révélation : un fondu court, le contenu monte de quelques pixels */
+@media (prefers-reduced-motion: no-preference) {
+  .revele main > :not(.step-nav):not(.workspace-main):not(.intro),
+  .revele .workspace-main > :not(.step-nav),
+  .revele .intro > * {
+    animation: entree .4s cubic-bezier(.2, .8, .2, 1) both;
+  }
+  .revele .workspace-main > :nth-child(2), .revele main > :nth-child(2) { animation-delay: .06s; }
+  .revele .workspace-main > :nth-child(3), .revele main > :nth-child(3) { animation-delay: .12s; }
+}
+@keyframes entree { from { opacity: 0; transform: translateY(8px); } }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+/* =========================================================
+   MARGES OPTIQUES DES CARTES
+   Un texte a de l'espace invisible au-dessus des majuscules et sous
+   la ligne de base (interligne). On le rogne pour le premier titre et
+   la dernière ligne d'une carte : le texte est alors exactement aussi
+   loin du bord en haut et en bas qu'à gauche et à droite.
+   ========================================================= */
+.skill-head h3, .card-top strong, .info h2, .panel-card h2, .contact-head h2 {
+  text-box: trim-both cap alphabetic;
+}
+.card-body > :last-child, .skill > .skill-desc:last-child, .objectifs ul {
+  text-box: trim-end cap alphabetic;
 }

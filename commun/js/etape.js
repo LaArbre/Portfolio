@@ -40,6 +40,7 @@
   /* À appeler par chaque page, une fois son contenu affiché */
   CV.demarrerEtape = () => {
     CV.updatePreviews();
+    CV.optique();
     // Lien vers un élément précis (ex. parcours/index.html#x-jgsi) : le contenu
     // est créé en JS, on fait donc défiler jusqu'à lui une fois affiché
     if (location.hash.length > 1) {

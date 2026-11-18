@@ -41,7 +41,7 @@
 
       <section class="info">
         <h2>Langues</h2>
-        <dl class="info-list">${p.langues.map(l => `<div><dt>${esc(l.name)}</dt><dd><span class="niveau">${esc(l.level)}</span></dd></div>`).join("")}</dl>
+        <dl class="info-list">${p.langues.map(l => `<div><dt>${esc(l.name)}</dt><dd><span class="niveau"><span class="optique">${esc(l.level)}</span></span></dd></div>`).join("")}</dl>
       </section>
 
       <section class="info">
@@ -66,4 +66,5 @@
   });
 
   CV.demarrerEtape();
+  CV.optique();
 })();

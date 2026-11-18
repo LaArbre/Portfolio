@@ -127,5 +127,181 @@
   CV.on = item => state.sel.has(item.id);
   CV.countIn = key => CV.IDS[key].filter(id => state.sel.has(id)).length;
   CV.reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- Centrage optique ----------
+     Le navigateur centre la "boîte" d'un caractère, pas son dessin :
+     un "1" paraît décalé à droite, un "×" trop haut, etc.
+     Pour chaque <span class="optique">, on dessine le texte en grand dans un
+     canvas et on calcule le centre de masse de ses pixels (là où l'œil voit
+     le "poids" du caractère), puis on le décale pour centrer ce point.
+     - horizontal : centre de masse (le "1" a son poids sur le trait, à droite)
+     - vertical   : milieu de l'encre (tous les chiffres restent alignés entre eux) */
+  const ECH = 100; // taille de dessin pour la mesure
+  const toile = document.createElement("canvas");
+  toile.width = ECH * 4;
+  toile.height = ECH * 2;
+  const ctx = toile.getContext("2d", { willReadFrequently: true });
+  const cache = new Map();
+
+  function mesurer(txt, police) {
+    const cle = police + "|" + txt;
+    if (cache.has(cle)) return cache.get(cle);
+    ctx.font = police.replace(/\d+(\.\d+)?px/, ECH + "px");
+    ctx.textBaseline = "alphabetic";
+    const m = ctx.measureText(txt);
+    const base = ECH * 1.4; // ligne de base dans la toile
+    ctx.clearRect(0, 0, toile.width, toile.height);
+    ctx.fillText(txt, ECH, base);
+    const { data, width, height } = ctx.getImageData(0, 0, toile.width, toile.height);
+    let masse = 0, sx = 0;
+    for (let y = 0; y < height; y++) {
+      for (let x = 0; x < width; x++) {
+        const a = data[(y * width + x) * 4 + 3];
+        if (a) { masse += a; sx += a * x; }
+      }
+    }
+    // Tout est exprimé en fraction de la taille de police
+    const r = {
+      dx: masse ? (m.width / 2 - (sx / masse - ECH)) / ECH : 0,
+      milieuEncre: (m.actualBoundingBoxAscent - m.actualBoundingBoxDescent) / 2 / ECH,
+      asc: m.fontBoundingBoxAscent / ECH,
+      desc: m.fontBoundingBoxDescent / ECH
+    };
+    cache.set(cle, r);
+    return r;
+  }
+
+  /* Textes centrés dans une forme (bouton, pastille, étiquette) sur toutes les pages :
+     leur contenu est entouré automatiquement d'un <span class="optique">. */
+  const A_CENTRER = [
+    // (pas les boutons des barres : leur hauteur ne doit jamais bouger)
+    ".btn:not(.step-nav .btn):not(.topbar-contact)", ".cv-toggle-on", ".cv-toggle-off", ".tags span", ".skill-usages li span",
+    ".certifs li", ".info-tags li", ".badge-bientot", ".pastille-lien",
+    ".intro-visual-link > span", ".step-dot", ".niveau", ".dot-warn", ".contact-close", ".brand"
+  ].join(",");
+
+  function envelopper(racine) {
+    racine.querySelectorAll(A_CENTRER).forEach(el => {
+      if (el.querySelector(":scope > .optique") || el.closest(".optique")) return;
+      // On n'enveloppe que le texte (et les petits <span> de texte), jamais les icônes
+      const noeuds = [...el.childNodes].filter(n =>
+        (n.nodeType === 3 && n.textContent.trim()) ||
+        (n.nodeType === 1 && n.tagName === "SPAN" && !n.querySelector("svg") && !n.classList.contains("dot-oeil")));
+      if (!noeuds.length) return;
+      const span = document.createElement("span");
+      span.className = "optique";
+      noeuds[0].before(span);
+      noeuds.forEach(n => span.appendChild(n));
+    });
+  }
+
+  CV.optique = (racine = document) => {
+    envelopper(racine);
+    racine.querySelectorAll(".optique").forEach(el => {
+      const txt = el.textContent;
+      if (!txt.trim()) return;
+      // Élément masqué (display: none, onglet caché…) : aucune mesure possible, on ne touche à rien
+      const parent = el.parentElement;
+      if (!el.getClientRects().length || !parent.offsetWidth) return;
+      const cs = getComputedStyle(el);
+      const taille = parseFloat(cs.fontSize);
+      // Texte sur plusieurs lignes : pas de recentrage, interligne normal
+      el.classList.remove("optique-multi");
+      if (el.getBoundingClientRect().height > taille * 1.6) {
+        el.classList.add("optique-multi");
+        el.style.transform = "";
+        return;
+      }
+      const r = mesurer(txt, `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`);
+      // On mesure sans le décalage précédent
+      el.style.transform = "";
+      // Boîte du texte telle que le navigateur la dessine : sa hauteur = ascendante + descendante
+      // de la police (les mêmes métriques que le canvas), d'où la position exacte de la ligne de base.
+      const plage = document.createRange();
+      plage.selectNodeContents(el);
+      const t = plage.getBoundingClientRect();
+      // On centre l'encre dans la FORME qui contient le texte (rond, pastille, bouton)
+      const forme = el.parentElement.getBoundingClientRect();
+      // Si la forme est agrandie (bulle sélectionnée, survol), toutes les mesures écran le sont aussi
+      const echelle = el.parentElement.offsetWidth ? forme.width / el.parentElement.offsetWidth : 1;
+      const px = taille * echelle;
+      const ligneDeBase = t.top + r.asc * px;
+      const encreY = ligneDeBase - r.milieuEncre * px;
+      const encreX = t.left + t.width / 2 - r.dx * px;
+      const dy = forme.top + forme.height / 2 - encreY;
+      // Horizontal : seulement pour les textes très courts (chiffres, symboles),
+      // sur un mot entier la répartition des lettres n'a pas de sens visuel
+      const seul = el.parentElement.children.length === 1 || el.parentElement.matches(".step-dot");
+      const dx = txt.trim().length <= 3 && seul ? forme.left + forme.width / 2 - encreX : 0;
+      // Décalage ramené à l'échelle normale (le transform s'applique avant l'agrandissement)
+      el.style.transform = `translate(${(dx / echelle).toFixed(2)}px, ${(dy / echelle).toFixed(2)}px)`;
+    });
+    racine.querySelectorAll(SVG_A_CENTRER).forEach(centrerSvg);
+  };
+
+  /* Icônes SVG dans un rond : on recale aussi leur centre de masse
+     (une coche ✓ penche à droite, un œil, une enveloppe…) */
+  const SVG_A_CENTRER = ".step-dot > svg, .dot-oeil > svg, .contact-ic > svg, .cv-toggle-on > svg, .page-info > svg";
+  const cacheSvg = new Map();
+  function centrerSvg(svg) {
+    const source = svg.outerHTML.replace(/currentColor/g, "#000").replace(/style="[^"]*"/, "");
+    const appliquer = c => {
+      const b = svg.getBoundingClientRect();
+      if (!b.width) return;
+      svg.style.transform = `translate(${(-c.x * b.width).toFixed(2)}px, ${(-c.y * b.height).toFixed(2)}px)`;
+    };
+    if (cacheSvg.has(source)) {
+      const c = cacheSvg.get(source);
+      if (c) appliquer(c);
+      return;
+    }
+    cacheSvg.set(source, null); // mesure en cours
+    const T = 200;
+    const img = new Image();
+    img.onload = () => {
+      const t = document.createElement("canvas");
+      t.width = t.height = T;
+      const c2 = t.getContext("2d", { willReadFrequently: true });
+      c2.drawImage(img, 0, 0, T, T);
+      const { data } = c2.getImageData(0, 0, T, T);
+      let masse = 0, sx = 0, sy = 0;
+      for (let i = 3; i < data.length; i += 4) {
+        const a = data[i];
+        if (!a) continue;
+        const p = (i - 3) / 4;
+        masse += a; sx += a * (p % T); sy += a * Math.floor(p / T);
+      }
+      const c = masse ? { x: sx / masse / T - 0.5, y: sy / masse / T - 0.5 } : { x: 0, y: 0 };
+      cacheSvg.set(source, c);
+      document.querySelectorAll(SVG_A_CENTRER).forEach(s => {
+        if (s.outerHTML.replace(/currentColor/g, "#000").replace(/style="[^"]*"/, "") === source) appliquer(c);
+      });
+    };
+    const xml = source.includes("xmlns") ? source : source.replace("<svg", '<svg xmlns="http://www.w3.org/2000/svg"');
+    img.src = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(xml.replace(/<svg([^>]*)>/, `<svg$1 width="${T}" height="${T}">`));
+  }
+  /* ---------- Fin du chargement ----------
+     On attend que la page soit construite ET que les polices soient là
+     (au plus 1 s), on fait les derniers calculs, puis on révèle le contenu. */
+  document.addEventListener("DOMContentLoaded", () => {
+    const polices = document.fonts ? document.fonts.ready : Promise.resolve();
+    const delai = new Promise(r => setTimeout(r, 1000));
+    Promise.race([polices, delai]).then(() => requestAnimationFrame(() => {
+      CV.optique();
+      const html = document.documentElement;
+      html.classList.remove("chargement");
+      html.classList.add("revele");
+    }));
+  });
+
+  // Les polices web changent les mesures : on recalcule une fois chargées,
+  // et après chaque redimensionnement de la fenêtre (éléments masqués / affichés)
+  if (document.fonts) document.fonts.ready.then(() => CV.optique());
+  let minuteurOptique;
+  window.addEventListener("resize", () => {
+    clearTimeout(minuteurOptique);
+    minuteurOptique = setTimeout(() => CV.optique(), 150);
+  });
+
   CV.CHECK = `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 })();

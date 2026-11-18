@@ -49,7 +49,7 @@
         <h2 id="contact-titre">Me contacter</h2>
         ${p.disponibilite ? `<p class="contact-dispo">${esc(p.disponibilite)}</p>` : ""}
       </div>
-      <button type="button" class="contact-close" aria-label="Fermer">×</button>
+      <button type="button" class="contact-close" aria-label="Fermer"><span class="optique">×</span></button>
     </div>
     <ul class="contact-liste">
       ${mail ? ligne("mail", "Email", mail.value,
@@ -65,6 +65,7 @@
       <span class="contact-retour" role="status"></span>
     </div>`;
   document.body.appendChild(dlg);
+  if (document.fonts) document.fonts.ready.then(() => CV.optique(dlg));
 
   const retour = dlg.querySelector(".contact-retour");
   let minuteur;
@@ -79,6 +80,7 @@
     if (e.target.closest("[data-contact]")) {
       e.preventDefault();
       dlg.showModal();
+      CV.optique(dlg);
     }
   });
   dlg.querySelector(".contact-close").addEventListener("click", () => dlg.close());

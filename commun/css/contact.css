@@ -2,7 +2,7 @@
    ME CONTACTER : panneau + bouton de la barre
    ========================================================= */
 .contact-dialog {
-  width: min(560px, calc(100vw - 32px)); padding: 24px;
+  width: min(560px, calc(100vw - 32px)); padding: var(--e-5);
   border: 1px solid var(--line); border-radius: 18px;
   background: var(--bg); color: var(--ink); box-shadow: var(--shadow-lg);
 }
@@ -10,30 +10,29 @@
 .contact-dialog[open] { animation: contact-in .25s cubic-bezier(.2, .8, .2, 1); }
 @keyframes contact-in { from { opacity: 0; transform: translateY(12px) scale(.98); } }
 
-.contact-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 18px; }
+.contact-head { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--e-4); margin-bottom: var(--e-5); }
 .contact-head h2 { font: 600 26px var(--serif); }
-.contact-dispo { display: inline-flex; align-items: center; gap: 7px; margin-top: 6px; font-size: 13px; font-weight: 600; color: var(--ok); }
-.contact-dispo::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
+.contact-dispo { margin-top: var(--e-2); font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
 .contact-close {
   width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--line); background: transparent;
-  color: var(--ink); font-size: 20px; line-height: 1; cursor: pointer;
+  color: var(--ink); font-size: 20px; line-height: 1; cursor: pointer; display: grid; place-items: center; padding: 0;
 }
-.contact-close:hover { border-color: var(--ink); }
+.contact-close:hover { border-color: var(--accent); color: var(--accent); }
 
-.contact-liste { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.contact-liste { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--e-3); }
 .contact-ligne {
-  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px;
-  padding: 12px 14px; border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line);
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: var(--e-3);
+  padding: var(--e-3) var(--e-4); border-radius: var(--radius); background: var(--surface); border: 1px solid var(--line);
 }
 .contact-ic { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; background: var(--accent-soft); color: var(--accent); }
 .contact-ic svg { width: 19px; height: 19px; }
 .contact-txt { min-width: 0; display: flex; flex-direction: column; }
 .contact-txt small { font-size: 12px; color: var(--muted); }
 .contact-txt strong { font-weight: 600; font-size: 14px; overflow-wrap: anywhere; }
-.contact-actions { display: flex; gap: 6px; }
+.contact-actions { display: flex; gap: var(--e-2); }
 .contact-actions:empty { display: none; }
 
-.contact-pied { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 16px; font-size: 13px; }
+.contact-pied { display: flex; justify-content: space-between; align-items: center; gap: var(--e-3); margin-top: var(--e-5); font-size: 13px; }
 .contact-retour { color: var(--ok); font-weight: 600; text-align: right; }
 
 /* Bouton dans la barre de progression */
@@ -42,7 +41,7 @@
 
 @media (max-width: 900px) {
   .topbar-contact { width: 40px; height: 40px; padding: 0; }
-  .topbar-contact span { display: none; }
+  .topbar-contact .optique, .topbar-contact > span { display: none; }
 }
 @media (max-width: 480px) {
   .contact-ligne { grid-template-columns: auto minmax(0, 1fr); }

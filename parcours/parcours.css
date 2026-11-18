@@ -1,4 +1,4 @@
 /* PAGE PARCOURS */
 
-.card-bullets { margin: 10px 0 0; padding-left: 18px; color: var(--muted); font-size: 14px; }
+.card-bullets { margin: var(--e-3) 0 0; padding-left: var(--e-4); color: var(--muted); font-size: 14px; }
 .card-bullets li + li { margin-top: 2px; }

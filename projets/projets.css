@@ -2,10 +2,23 @@
 
 .projets-grid { grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr)); }
 .card-sub.mono { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 13px; }
-.card-link { display: inline-block; margin-top: 10px; font-size: 13px; font-weight: 600; color: var(--ink); }
-.card-link:hover { color: var(--accent); }
 
-/* Cartes étroites : l'interrupteur passe en bas de la carte */
+/* Cartes étroites : le contenu en haut, les pastilles en bas */
 .projets-grid .card { flex-direction: column; }
 .projets-grid .card-body { width: 100%; }
-.projets-grid .cv-toggle { margin-top: auto; }
+
+/* Pied de carte : "Sur le CV" à gauche, lien GitHub à droite */
+.card-pied {
+  width: 100%; margin-top: auto;
+  display: flex; justify-content: space-between; align-items: center; gap: var(--e-2);
+}
+
+/* Pastille GitHub : même gabarit que "Sur le CV" */
+.pastille-lien {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px; border-radius: 99px; border: 1px solid var(--line);
+  font-size: 12px; font-weight: 600; color: var(--muted); text-decoration: none; white-space: nowrap;
+  transition: color .15s ease, border-color .15s ease;
+}
+.pastille-lien svg { width: 12px; height: 12px; }
+.pastille-lien:hover { color: var(--accent); border-color: var(--accent); }

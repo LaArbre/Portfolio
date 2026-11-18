@@ -2,8 +2,8 @@
    BARRE DE PROGRESSION (le menu du haut)
    Se dessine dans <header id="topbar"> à partir de
    <body data-etape="...">. Les étapes visitées se cochent.
-   Avant "Votre CV", une bulle ronde montre l'aperçu du CV
-   (en grand au survol).
+   Au survol de la bulle "Votre CV" (repérée par un petit œil),
+   l'aperçu du CV s'affiche en grand.
    ========================================================= */
 (() => {
   "use strict";
@@ -11,6 +11,8 @@
   const CV = window.CV;
   const { state, esc, $ } = CV;
   const courante = document.body.dataset.etape;
+  const indexCourant = CV.ETAPES.findIndex(e => e.key === courante);
+  const dernierIndex = CV.ETAPES.length - 1;
 
   // La page ouverte compte comme visitée
   if (CV.IDS[courante] && !state.visited.has(courante)) {
@@ -23,7 +25,7 @@
 
   topbar.classList.add("topbar");
   topbar.innerHTML = `
-    <a class="brand" href="${CV.urlAccueil}" aria-label="Retour à l'accueil">ES</a>
+    <a class="brand" href="${CV.urlAccueil}" aria-label="Retour à l'accueil"><span class="optique">ES</span></a>
     <nav class="stepper" aria-label="Étapes du CV">
       <div class="stepper-track" aria-hidden="true"><div class="stepper-fill"></div></div>
       <ol></ol>
@@ -31,70 +33,86 @@
     <button type="button" class="btn btn-ghost topbar-contact" data-contact aria-label="Me contacter">${CV.iconeContact || ""}<span>Me contacter</span></button>
     <div class="progress-text"></div>`;
 
-  /* ---------- Les cases : 4 étapes, la bulle d'aperçu, puis "Votre CV" ---------- */
+  /* ---------- Les cases : une par étape ---------- */
   const liste = $(".stepper ol", topbar);
-  CV.ETAPES.forEach(e => {
-    if (e.key === "cv") liste.insertAdjacentHTML("beforeend", bulleApercu());
-    liste.insertAdjacentHTML("beforeend", `<li data-key="${e.key}"></li>`);
-  });
+  CV.ETAPES.forEach(e => liste.insertAdjacentHTML("beforeend", `<li data-key="${e.key}"></li>`));
 
-  function bulleApercu() {
-    return `
-      <li class="step step-apercu">
-        <button type="button" class="apercu-btn" aria-label="Aperçu du CV" aria-controls="apercu-pop">
-          <span class="step-dot apercu-dot"><span class="apercu-mini" aria-hidden="true"></span></span>
-          <span class="step-label">Aperçu<span class="step-count"></span></span>
-        </button>
-        <div class="apercu-pop" id="apercu-pop" role="dialog" aria-label="Aperçu du CV">
-          <div class="apercu-pop-head">
-            <span><span class="live-dot"></span>Aperçu en direct</span>
-            <a href="${CV.urlEtape("cv")}">Ouvrir le CV →</a>
-          </div>
-          <div class="cv-frame js-preview"></div>
+  /* ---------- Aperçu du CV au survol de la bulle "Votre CV" ----------
+     Un petit œil sur la bulle signale qu'on peut y jeter un œil.
+     Pas d'aperçu sur la page CV elle-même (le CV y est déjà affiché). */
+  const avecApercu = courante !== "cv";
+  const OEIL = `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 8S4 3.5 8 3.5 14.5 8 14.5 8 12 12.5 8 12.5 1.5 8 1.5 8z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="8" cy="8" r="2" fill="currentColor"/></svg>`;
+  const liCV = $('li[data-key="cv"]', liste);
+  if (avecApercu) {
+    liCV.insertAdjacentHTML("beforeend", `
+      <div class="apercu-pop" id="apercu-pop" role="dialog" aria-label="Aperçu du CV">
+        <div class="apercu-pop-head">
+          <span><span class="live-dot"></span>Aperçu en direct</span>
+          <a href="${CV.urlEtape("cv")}">Ouvrir le CV →</a>
         </div>
-      </li>`;
+        <div class="cv-frame js-preview"></div>
+      </div>`);
   }
 
-  /* Miniature ronde : le haut de la feuille du CV, en tout petit */
-  function miniature(added = []) {
-    $(".apercu-mini", topbar).innerHTML = `<div class="cv-scaler">${CV.renderCV()}</div>`;
-    $(".step-apercu .step-count", topbar).textContent = state.sel.size;
-    if (added.length && !CV.reduceMotion) {
-      const dot = $(".apercu-dot", topbar);
-      dot.classList.remove("ping");
-      void dot.offsetWidth;
-      dot.classList.add("ping");
-    }
+  /* L'œil "respire" quand le CV change */
+  function signalerChangement(added = []) {
+    if (!avecApercu || !added.length || CV.reduceMotion) return;
+    const oeil = $(".dot-oeil", liCV);
+    if (!oeil) return;
+    oeil.classList.remove("ping");
+    void oeil.offsetWidth;
+    oeil.classList.add("ping");
   }
 
-  /* Survol : grand aperçu. Écran tactile : un toucher l'ouvre / le ferme */
+  /* Écran tactile (pas de survol) : 1er toucher = aperçu, le lien "Ouvrir le CV" mène à la page */
   const tactile = window.matchMedia("(hover: none)").matches;
-  const bulle = $(".step-apercu", topbar);
-  $(".apercu-btn", topbar).addEventListener("click", () => {
-    if (tactile) bulle.classList.toggle("is-open");
-    else if (courante !== "cv") location.href = CV.urlEtape("cv");
-  });
-  document.addEventListener("click", e => {
-    if (!bulle.contains(e.target)) bulle.classList.remove("is-open");
-  });
-  document.addEventListener("keydown", e => {
-    if (e.key === "Escape") bulle.classList.remove("is-open");
-  });
+  if (avecApercu) {
+    liCV.addEventListener("click", e => {
+      const lien = e.target.closest("li > a");
+      if (tactile && lien && !liCV.classList.contains("is-open")) {
+        e.preventDefault();
+        liCV.classList.add("is-open");
+      }
+    });
+    document.addEventListener("click", e => { if (!liCV.contains(e.target)) liCV.classList.remove("is-open"); });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") liCV.classList.remove("is-open"); });
+  }
+
+  /* Une seule fois par visite : l'aperçu "sort" un instant de la bulle puis s'y range,
+     pour montrer qu'il est là sans rien avoir à expliquer */
+  function teaser() {
+    if (!avecApercu || CV.reduceMotion) return;
+    try {
+      if (sessionStorage.getItem("cvb:teaser")) return;
+      sessionStorage.setItem("cvb:teaser", "1");
+    } catch { /* pas de stockage : on montre quand même */ }
+    setTimeout(() => {
+      liCV.classList.add("is-teaser");
+      setTimeout(() => liCV.classList.remove("is-teaser"), 1800);
+    }, 1200);
+  }
 
   function dessiner() {
     CV.ETAPES.forEach((e, i) => {
       const li = $(`li[data-key="${e.key}"]`, liste);
-      const visited = state.visited.has(e.key);
+      // Une bulle n'est "complète" (cochée) que si elle a été visitée ET qu'elle est avant la page en cours
+      const visited = i < indexCourant && state.visited.has(e.key);
       const current = e.key === courante;
-      const ids = CV.IDS[e.key];
-      const count = !ids ? state.sel.size : ids.length ? CV.countIn(e.key) : "";
-      li.className = ["step", current && "is-current", visited && "is-visited", e.key === "cv" && "is-final"].filter(Boolean).join(" ");
-      li.innerHTML = `
+      const ouvert = li.classList.contains("is-open");
+      li.className = ["step", current && "is-current", visited && "is-visited", e.key === "cv" && "is-final",
+        e.key === "cv" && avecApercu && "has-apercu", ouvert && "is-open"].filter(Boolean).join(" ");
+      const lien = `
           <a href="${CV.urlEtape(e.key)}" ${current ? 'aria-current="step"' : ""}>
-            <span class="step-dot">${visited && !current ? CV.CHECK : i + 1}</span>
-            <span class="step-label">${esc(e.label)}<span class="step-count">${count}</span></span>
+            <span class="step-dot">${visited && !current ? CV.CHECK : `<span class="optique">${i + 1}</span>`}${e.key === "cv" && avecApercu ? `<span class="dot-oeil">${OEIL}</span>` : ""}</span>
+            <span class="step-label">${esc(e.label)}</span>
           </a>`;
+      // On ne remplace que le lien : l'aperçu (s'il y en a un) reste en place
+      const ancien = li.querySelector(":scope > a");
+      if (ancien) ancien.outerHTML = lien;
+      else li.insertAdjacentHTML("afterbegin", lien);
     });
+
+    CV.optique(topbar);
 
     const done = CV.ETAPES_CONTENU.filter(e => state.visited.has(e.key)).length;
     const pct = Math.round((done / CV.ETAPES_CONTENU.length) * 100);
@@ -105,7 +123,7 @@
     if (pct < 100) {
       fill.style.width = "0%";
     } else if (!enAnimation) {
-      fill.style.width = "100%";
+      fill.style.width = `${(indexCourant / dernierIndex) * 100}%`;
     }
     return pct === 100;
   }
@@ -115,7 +133,9 @@
   function animerCompletion() {
     const fill = $(".stepper-fill", topbar);
     const dots = [...topbar.querySelectorAll(".step-dot")];
-    const segments = dots.length - 1;
+    // La ligne va de bulle en bulle jusqu'à la page en cours (pas au-delà)
+    const segments = Math.max(indexCourant, 0);
+    const total = dots.length - 1;
     const DUREE = 320; // ms par segment
 
     enAnimation = true;
@@ -132,7 +152,7 @@
 
     pop(0);
     for (let i = 1; i <= segments; i++) {
-      setTimeout(() => { fill.style.width = `${(i / segments) * 100}%`; }, (i - 1) * DUREE);
+      setTimeout(() => { fill.style.width = `${(i / total) * 100}%`; }, (i - 1) * DUREE);
       setTimeout(() => pop(i), i * DUREE);
     }
     setTimeout(() => {
@@ -144,8 +164,9 @@
 
   CV.dessinerBarre = dessiner;
   CV.onChange(dessiner);
-  CV.onChange(miniature);
-  miniature();
+  CV.onChange(signalerChangement);
+  CV.onChange(() => CV.optique());
+  teaser();
 
   const doitAnimer = !state.celebre && CV.ETAPES_CONTENU.every(e => state.visited.has(e.key));
   enAnimation = doitAnimer && !CV.reduceMotion; // la ligne attend l'animation au lieu d'apparaître pleine

@@ -1,7 +1,7 @@
 /* =========================================================
    BARRE DE PROGRESSION (menu du haut)
    ========================================================= */
-.topbar {
+#topbar, .topbar {
   position: sticky; top: 0; z-index: 20;
   height: var(--topbar-h);
   display: grid; grid-template-columns: auto 1fr auto auto; align-items: center; gap: 20px;
@@ -10,10 +10,6 @@
   backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--line);
 }
-@media (prefers-reduced-motion: no-preference) {
-  .topbar { animation: topbar-in .5s cubic-bezier(.2, .8, .2, 1) both; }
-}
-@keyframes topbar-in { from { transform: translateY(-100%); opacity: 0; } }
 
 .brand {
   width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center;
@@ -21,9 +17,9 @@
 }
 
 .stepper { position: relative; max-width: 760px; width: 100%; min-width: 0; justify-self: center; }
-.stepper ol { position: relative; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); list-style: none; margin: 0; padding: 0; }
+.stepper ol { position: relative; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); list-style: none; margin: 0; padding: 0; }
 .stepper-track {
-  position: absolute; left: 8.333%; right: 8.333%; top: 15px; height: 3px; border-radius: 3px; background: var(--line);
+  position: absolute; left: 10%; right: 10%; top: 15px; height: 3px; border-radius: 3px; background: var(--line);
 }
 /* La ligne reste grise ; elle ne se remplit qu'une fois tout parcouru */
 .stepper-fill { height: 100%; width: 0; border-radius: inherit; background: var(--accent); }
@@ -35,8 +31,6 @@
   45% { transform: scale(1.3); box-shadow: 0 0 0 7px var(--accent-soft); }
   100% { transform: scale(1); }
 }
-.topbar.is-complete .step.is-final .step-dot { border-style: solid; border-color: var(--accent); color: var(--accent); }
-.topbar.is-complete .step.is-final.is-current .step-dot { color: var(--bg); border-color: var(--ink); }
 .step a { display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; border-radius: 10px; padding: 0 4px; }
 .step-dot {
   position: relative; z-index: 1;
@@ -46,15 +40,15 @@
   transition: all .25s ease;
 }
 .step-dot svg { width: 15px; height: 15px; }
-.step-label { font-size: 13px; color: var(--muted); font-weight: 500; white-space: nowrap; display: flex; align-items: center; gap: 6px; }
-.step-count {
-  font-size: 11px; font-weight: 600; min-width: 20px; padding: 1px 6px; border-radius: 99px;
-  background: var(--surface-2); color: var(--muted); text-align: center;
-}
-.step-count:empty { display: none; }
-.step a:hover .step-dot { border-color: var(--ink); color: var(--ink); }
+.step-label { font-size: 13px; color: var(--muted); font-weight: 500; white-space: nowrap; }
+/* Survol : la bulle grossit un peu (pas de blanc) */
+.step-dot { transition: transform .25s cubic-bezier(.3, 1.4, .5, 1), background .25s ease, border-color .25s ease, color .25s ease; }
+.step a:hover .step-dot { transform: scale(1.12); border-color: var(--accent); color: var(--accent); }
+.step.is-visited a:hover .step-dot { color: var(--accent-ink); }
 .step.is-visited .step-dot { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
-.step.is-current .step-dot { background: var(--ink); border-color: var(--ink); color: var(--bg); box-shadow: 0 0 0 5px var(--accent-soft); }
+/* Page en cours : c'est le grossissement qui marque la sélection */
+.step.is-current .step-dot,
+.step.is-current a:hover .step-dot { transform: scale(1.3); border-color: var(--accent); color: var(--accent); background: var(--surface); }
 .step.is-current .step-label { color: var(--ink); font-weight: 600; }
 .step { position: relative; }
 .step.is-final .step-dot { border-style: dashed; }
@@ -71,35 +65,38 @@
 @media (max-width: 640px) {
   :root { --topbar-h: 68px; }
   .step-label { font-size: 11px; }
-  .step-count { display: none; }
-  .step:not(.is-current) .step-label { visibility: hidden; }
+    .step:not(.is-current) .step-label { visibility: hidden; }
   .step-dot { width: 28px; height: 28px; }
   .stepper-track { top: 13px; }
-  .apercu-dot { width: 34px; height: 34px; margin-top: -3px; }
 }
 
 /* =========================================================
-   BULLE D'APERÇU DU CV (case avant "Votre CV")
+   APERÇU DU CV au survol de la bulle "Votre CV"
    ========================================================= */
-.apercu-btn {
-  display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%;
-  padding: 0 4px; border: 0; background: none; color: inherit; font: inherit; cursor: pointer; border-radius: 10px;
+/* Le petit œil : indice visuel "on peut regarder ici" */
+.step-dot { position: relative; }
+.dot-oeil {
+  position: absolute; top: -7px; right: -9px; z-index: 2;
+  width: 18px; height: 18px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--accent); color: var(--accent-ink);
+  box-shadow: 0 0 0 2px var(--bg);
+  transition: transform .2s ease;
 }
-.apercu-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.apercu-dot {
-  width: 40px; height: 40px; margin-top: -4px; padding: 0; overflow: hidden;
-  border-color: var(--accent); background: #fff;
+.dot-oeil svg { width: 12px; height: 12px; }
+/* il "cligne" doucement de temps en temps */
+@media (prefers-reduced-motion: no-preference) {
+  .dot-oeil svg { animation: clin 5s ease-in-out infinite; transform-origin: center; }
 }
-.apercu-mini { position: relative; display: block; width: 100%; height: 100%; }
-.apercu-mini .cv-scaler { position: absolute; top: 0; left: -8px; transform: scale(.075); }
-.apercu-btn:hover .apercu-dot { transform: scale(1.12); border-color: var(--ink); }
-.apercu-dot.ping { animation: apercu-ping .7s ease-out; }
-@keyframes apercu-ping {
-  0% { box-shadow: 0 0 0 0 var(--accent); }
-  100% { box-shadow: 0 0 0 10px transparent; }
+@keyframes clin { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
+.dot-oeil.ping { animation: oeil-ping .7s ease-out; }
+@keyframes oeil-ping {
+  0% { box-shadow: 0 0 0 2px var(--bg), 0 0 0 2px var(--accent); }
+  100% { box-shadow: 0 0 0 2px var(--bg), 0 0 0 12px transparent; }
 }
+.step.has-apercu > a:hover .dot-oeil { transform: scale(1.15); }
 
-/* Grand aperçu */
+/* Le grand aperçu */
 .apercu-pop {
   position: absolute; top: calc(100% + 16px); left: 50%; z-index: 40;
   width: 360px; padding: 12px; border-radius: 14px;
@@ -114,12 +111,18 @@
 }
 /* Zone invisible entre la bulle et l'aperçu : la souris peut y descendre sans le fermer */
 .apercu-pop::after { content: ""; position: absolute; left: 0; right: 0; top: -18px; height: 18px; }
-.step-apercu:hover .apercu-pop,
-.step-apercu.is-open .apercu-pop,
-.step-apercu:has(.apercu-btn:focus-visible) .apercu-pop,
-.step-apercu:has(.apercu-pop:focus-within) .apercu-pop {
+.has-apercu:hover .apercu-pop,
+.has-apercu.is-open .apercu-pop,
+.has-apercu:has(> a:focus-visible) .apercu-pop,
+.has-apercu:has(.apercu-pop:focus-within) .apercu-pop {
   opacity: 1; visibility: visible; transform: translate(-50%, 0);
   transition: opacity .2s ease, transform .2s ease;
+}
+/* Teaser : une fois par visite, l'aperçu sort à moitié puis se range */
+.has-apercu.is-teaser .apercu-pop {
+  opacity: 1; visibility: visible; transform: translate(-50%, 0);
+  clip-path: inset(0 0 55% 0 round 14px);
+  transition: opacity .35s ease, transform .35s ease, clip-path .35s ease;
 }
 .apercu-pop-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 13px; font-weight: 600; }
 .apercu-pop-head > span { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); }
@@ -127,12 +130,20 @@
 .apercu-pop-head a:hover { text-decoration: underline; }
 .live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
 
+/* La bulle "Votre CV" est la dernière : on cale l'aperçu à droite pour qu'il ne sorte pas de l'écran */
+@media (max-width: 1100px) {
+  .apercu-pop { left: auto; right: -20px; transform: translateY(-6px); }
+  .apercu-pop::before { left: auto; right: 36px; transform: rotate(45deg); }
+  .has-apercu:hover .apercu-pop, .has-apercu.is-open .apercu-pop,
+  .has-apercu:has(> a:focus-visible) .apercu-pop, .has-apercu:has(.apercu-pop:focus-within) .apercu-pop,
+  .has-apercu.is-teaser .apercu-pop { transform: none; }
+}
 @media (max-width: 640px) {
   .apercu-pop {
     position: fixed; top: calc(var(--topbar-h) + 10px); left: 16px; right: 16px; width: auto;
-    max-height: calc(100vh - var(--topbar-h) - 26px); overflow: auto; transform: translateY(-6px);
+    max-height: calc(100vh - var(--topbar-h) - 26px); overflow: auto;
   }
   .apercu-pop::before { display: none; }
-  .step-apercu:hover .apercu-pop, .step-apercu.is-open .apercu-pop,
-  .step-apercu:has(.apercu-btn:focus-visible) .apercu-pop, .step-apercu:has(.apercu-pop:focus-within) .apercu-pop { transform: none; }
+  .dot-oeil { width: 16px; height: 16px; top: -6px; right: -8px; }
+  .dot-oeil svg { width: 11px; height: 11px; }
 }
