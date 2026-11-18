@@ -1,207 +1,75 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Portfolio — Elio Spaeth</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
-    <div class="container">
-      <header>
-        <div class="brand">
-          <div class="avatar">ES</div>
-          <div>
-            <div class="muted">Portfolio BTS SIO SLAM</div>
-            <h1>Elio Spaeth</h1>
-            <div class="muted">Étudiant en BTS SIO — Spécialité SLAM</div>
-          </div>
-        </div>
-        <nav>
-          <a href="index.html">Accueil</a>
-          <a href="experiences.html">Expériences</a>
-          <a href="projets.html">Projets</a>
-          <a href="veille.html">Veille</a>
-          <a href="contact.html">Contact</a>
-        </nav>
-      </header>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Elio Spaeth — Back-end, données & cybersécurité</title>
+  <meta name="description" content="Elio Spaeth, diplômé d'un BTS SIO SLAM à Strasbourg : développement back-end, bases de données et cybersécurité. Disponible immédiatement.">
+  <!-- Aperçu du lien quand il est partagé (LinkedIn, Discord, messageries…) -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:site_name" content="Portfolio — Elio Spaeth">
+  <meta property="og:title" content="Elio Spaeth — Back-end, données & cybersécurité">
+  <meta property="og:description" content="Elio Spaeth, diplômé d'un BTS SIO SLAM à Strasbourg : développement back-end, bases de données et cybersécurité. Disponible immédiatement.">
+  <meta property="og:url" content="https://laarbre.github.io/Portfolio/">
+  <meta name="twitter:card" content="summary">
+  <link rel="canonical" href="https://laarbre.github.io/Portfolio/">
+  <link rel="icon" href="commun/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-      <section class="card hero-card fade-in">
-        <div class="hero-content">
-          <div class="hero-text">
-            <h2>Elio Spaeth</h2>
-            <p class="hero-subtitle">Étudiant en BTS SIO — Spécialité SLAM</p>
-            <p class="hero-location">Strasbourg, France</p>
+  <!-- Commun -->
+  <link rel="stylesheet" href="commun/css/base.css">
+  <link rel="stylesheet" href="commun/css/contact.css">
+  <link rel="stylesheet" href="commun/css/feuille-cv.css">
+  <!-- Propre à la page (l'accueil reste à la racine pour GitHub Pages,
+       son CSS et son JS sont dans le dossier accueil/) -->
+  <link rel="stylesheet" href="accueil/accueil.css">
+</head>
+<body data-etape="accueil" data-racine="./">
 
-            <div class="hero-stats">
-              <div class="hero-stat">
-                <span class="hero-stat-number">Bac +2</span>
-                <span class="hero-stat-label">Années d'étude</span>
-              </div>
-              <div class="hero-stat">
-                <span class="hero-stat-number">8+</span>
-                <span class="hero-stat-label">Projets réalisés</span>
-              </div>
-              <div class="hero-stat">
-                <span class="hero-stat-number">18+</span>
-                <span class="hero-stat-label">Technos maîtrisées</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="hero-actions">
-            <a href="assets/CV_ELIO_SPAETH.pdf" download class="btn primary">
-              Télécharger mon CV
-            </a>
-            <a href="contact.html" class="btn secondary"> Me contacter </a>
-          </div>
-        </div>
-      </section>
-
-      <main class="dashboard">
-        <div class="column">
-          <section class="card fade-in">
-            <h2>Compétences techniques</h2>
-            <div class="skills-grid">
-              <div class="skill-category">
-                <h3>Langages</h3>
-                <div class="tech-stack">
-                  <div class="tech-item">
-                    <div class="tech-icon python">Py</div>
-                    <span class="tech-name">Python</span>
-                  </div>
-                  <div class="tech-item">
-                    <div class="tech-icon php">PHP</div>
-                    <span class="tech-name">PHP</span>
-                  </div>
-                  <div class="tech-item">
-                    <div class="tech-icon javascript">JS</div>
-                    <span class="tech-name">JavaScript</span>
-                  </div>
-                  <div class="tech-item">
-                    <div class="tech-icon java">Java</div>
-                    <span class="tech-name">Java</span>
-                  </div>
-                  <div class="tech-item">
-                    <div class="tech-icon cpp">C++</div>
-                    <span class="tech-name">C++</span>
-                  </div>
-                  <div class="tech-item">
-                    <div class="tech-icon powershell">PS</div>
-                    <span class="tech-name">PowerShell</span>
-                  </div>
-                  <div class="tech-item">
-                    <div class="tech-icon html-css">Web</div>
-                    <span class="tech-name">HTML/CSS</span>
-                  </div>
-                  <div class="tech-item">
-                    <div class="tech-icon windev">WD</div>
-                    <span class="tech-name">Windev</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="skill-category">
-                <h3>Bases de données</h3>
-                <div class="tech-stack">
-                  <div class="tech-item">
-                    <div class="tech-icon mysql">SQL</div>
-                    <span class="tech-name">MySQL</span>
-                  </div>
-                  <div class="tech-item">
-                    <div class="tech-icon sqlite">SQL</div>
-                    <span class="tech-name">SQLite</span>
-                  </div>
-                  <div class="tech-item">
-                    <div class="tech-icon orm">ORM</div>
-                    <span class="tech-name">ORM</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="skill-category">
-                <h3>Outils</h3>
-                <div class="tech-stack">
-                  <div class="tech-item">
-                    <div class="tech-icon git">Git</div>
-                    <span class="tech-name">Git</span>
-                  </div>
-                  <div class="tech-item">
-                    <div class="tech-icon linux">Lx</div>
-                    <span class="tech-name">Linux</span>
-                  </div>
-                  <div class="tech-item">
-                    <div class="tech-icon virtualisation">VM</div>
-                    <span class="tech-name">Virtualisation</span>
-                  </div>
-                  <div class="tech-item">
-                    <div class="tech-icon vba">VBA</div>
-                    <span class="tech-name">VBA</span>
-                  </div>
-                </div>
-              </div>
-
-              <div class="skill-category">
-                <h3>Sécurité</h3>
-                <div class="tech-stack">
-                  <div class="tech-item">
-                    <div class="tech-icon rgpd">GDPR</div>
-                    <span class="tech-name">RGPD</span>
-                  </div>
-                  <div class="tech-item">
-                    <div class="tech-icon osint">OSI</div>
-                    <span class="tech-name">OSINT</span>
-                  </div>
-                  <div class="tech-item">
-                    <div class="tech-icon security">Sec</div>
-                    <span class="tech-name">Hashing/Salt</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-        </div>
-
-        <div class="column">
-          <section class="card fade-in">
-            <h2>Projets récents</h2>
-            <div class="projects-preview">
-              <a href="projet-musique.html" class="project-preview">
-                <h3>Application de musique</h3>
-                <p class="project-meta">JavaScript — VM Serveur</p>
-                <p>
-                  Interface de téléchargement et écoute musicale sur serveur
-                  personnel
-                </p>
-                <span class="project-link">Voir le projet →</span>
-              </a>
-
-              <a href="projet-bot-discord.html" class="project-preview">
-                <h3>Bot Discord</h3>
-                <p class="project-meta">Python</p>
-                <p>Automatisation et gestion d'activités sur serveur RP</p>
-                <span class="project-link">Voir le projet →</span>
-              </a>
-
-              <a href="projet-password-manager.html" class="project-preview">
-                <h3>Gestionnaire de mots de passe</h3>
-                <p class="project-meta">Python / SQLite</p>
-                <p>
-                  Stockage et chiffrement des mots de passe de manière sécurisée
-                </p>
-                <span class="project-link">Voir le projet →</span>
-              </a>
-            </div>
-            <div class="view-all">
-              <a href="projets.html" class="btn outline"
-                >Voir tous les projets →</a
-              >
-            </div>
-          </section>
-        </div>
-      </main>
-
-      <footer>© 2025 Elio Spaeth</footer>
+  <main class="intro">
+    <div class="intro-text">
+      <p class="kicker">Portfolio · Elio Spaeth · Strasbourg</p>
+      <h1>Développeur <span class="nowrap">back-end,</span><br><em>données &amp; cybersécurité.</em></h1>
+      <p class="lead">Diplômé d'un BTS SIO SLAM, disponible immédiatement. Parcourez mon profil en quatre étapes : un CV se construit au fil de la visite, et vous l'emportez à la fin.</p>
+      <ol class="how">
+        <li><span>01</span><div><strong>Découvrez</strong>Qui je suis, ce que je sais faire, où je l'ai appris et ce que j'ai construit.</div></li>
+        <li><span>02</span><div><strong>Ajustez</strong>Retirez ce qui ne concerne pas votre poste. Le CV suit en direct.</div></li>
+        <li><span>03</span><div><strong>Téléchargez</strong>Un PDF d'une page, prêt à transmettre.</div></li>
+      </ol>
+      <div class="intro-actions">
+        <a class="btn btn-primary btn-lg" href="profil/index.html">Commencer <span aria-hidden="true">→</span></a>
+        <button type="button" class="btn btn-ghost btn-lg" data-contact>Me contacter</button>
+      </div>
     </div>
-  </body>
+
+    <div class="intro-visual">
+      <div class="paper paper-back" aria-hidden="true"></div>
+      <div class="paper paper-mid" aria-hidden="true"></div>
+      <div class="cv-frame js-preview intro-sheet" aria-hidden="true"></div>
+      <!-- Tout le CV est cliquable : il mène à la page CV -->
+      <a class="intro-visual-link" href="cv/index.html" aria-label="Voir le CV complet">
+        <span>Voir le CV complet <span aria-hidden="true">→</span></span>
+      </a>
+    </div>
+  </main>
+
+  <noscript><p class="noscript">Ce site a besoin de JavaScript pour fonctionner.</p></noscript>
+
+  <!-- Contenu -->
+  <script src="commun/data/profil.js"></script>
+  <script src="commun/data/competences.js"></script>
+  <script src="commun/data/parcours.js"></script>
+  <script src="commun/data/projets.js"></script>
+  <!-- Commun -->
+  <!-- Bibliothèque externe : dessin du QR code du site -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+  <script src="commun/js/etat.js"></script>
+  <script src="commun/js/rendu-cv.js"></script>
+  <script src="commun/js/contact.js"></script>
+  <!-- Propre à la page -->
+  <script src="accueil/accueil.js"></script>
+</body>
 </html>

@@ -1,0 +1,11 @@
+/* PAGE PROJETS */
+
+.projets-grid { grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr)); }
+.card-sub.mono { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 13px; }
+.card-link { display: inline-block; margin-top: 10px; font-size: 13px; font-weight: 600; color: var(--ink); }
+.card-link:hover { color: var(--accent); }
+
+/* Cartes étroites : l'interrupteur passe en bas de la carte */
+.projets-grid .card { flex-direction: column; }
+.projets-grid .card-body { width: 100%; }
+.projets-grid .cv-toggle { margin-top: auto; }

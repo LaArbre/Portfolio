@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Projets — Elio Spaeth</title>
+  <link rel="icon" href="../commun/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Commun -->
+  <link rel="stylesheet" href="../commun/css/base.css">
+  <link rel="stylesheet" href="../commun/css/contact.css">
+  <link rel="stylesheet" href="../commun/css/barre-progression.css">
+  <link rel="stylesheet" href="../commun/css/etape.css">
+  <link rel="stylesheet" href="../commun/css/feuille-cv.css">
+  <!-- Propre à la page -->
+  <link rel="stylesheet" href="projets.css">
+</head>
+<body data-etape="projets" data-racine="../">
+
+  <header id="topbar"></header>
+
+  <main class="page workspace">
+    <div class="workspace-main">
+      <header class="step-head">
+        <p class="kicker">Étape 4 sur 5</p>
+        <h1>Ce que j'ai construit</h1>
+        <p class="lead">Des projets personnels et d'école, du bot Discord à l'agent conversationnel.</p>
+      </header>
+
+      <div id="contenu-etape"></div>
+
+      <nav class="step-nav" aria-label="Navigation entre étapes">
+        <a class="btn btn-ghost" href="../parcours/index.html">← Parcours</a>
+        <a class="btn btn-primary" href="../cv/index.html">Voir mon CV →</a>
+      </nav>
+    </div>
+  </main>
+
+  <noscript><p class="noscript">Ce site a besoin de JavaScript pour fonctionner.</p></noscript>
+
+  <!-- Contenu -->
+  <script src="../commun/data/profil.js"></script>
+  <script src="../commun/data/competences.js"></script>
+  <script src="../commun/data/parcours.js"></script>
+  <script src="../commun/data/projets.js"></script>
+  <!-- Commun -->
+  <!-- Bibliothèque externe : dessin du QR code du site -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+  <script src="../commun/js/etat.js"></script>
+  <script src="../commun/js/rendu-cv.js"></script>
+  <script src="../commun/js/contact.js"></script>
+  <script src="../commun/js/barre-progression.js"></script>
+  <script src="../commun/js/etape.js"></script>
+  <!-- Propre à la page -->
+  <script src="projets.js"></script>
+</body>
+</html>

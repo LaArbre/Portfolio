@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Votre CV — Elio Spaeth</title>
+  <link rel="icon" href="../commun/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Commun -->
+  <link rel="stylesheet" href="../commun/css/base.css">
+  <link rel="stylesheet" href="../commun/css/contact.css">
+  <link rel="stylesheet" href="../commun/css/barre-progression.css">
+  <link rel="stylesheet" href="../commun/css/feuille-cv.css">
+  <!-- Propre à la page -->
+  <link rel="stylesheet" href="cv.css">
+</head>
+<body data-etape="cv" data-racine="../">
+
+  <header id="topbar"></header>
+
+  <main class="page">
+    <header class="step-head">
+      <p class="kicker">Étape 5 sur 5</p>
+      <h1>Votre CV sur mesure</h1>
+      <p class="lead">Voici le résultat de vos choix. Téléchargez-le en PDF ou partagez le lien de cette version.</p>
+    </header>
+
+    <div class="final">
+      <div class="final-stage"><div class="cv-frame js-preview"></div></div>
+
+      <aside class="final-panel">
+        <div class="panel-card">
+          <h2>Contenu</h2>
+          <ul class="summary" id="resume-selection"></ul>
+          <label class="switch">
+            <input type="checkbox" id="toggle-details">
+            <span class="switch-ui" aria-hidden="true"></span>
+            <span>Afficher le détail des missions et projets</span>
+          </label>
+          <div id="page-info" class="page-info" role="status"></div>
+        </div>
+
+        <div class="panel-card">
+          <button type="button" class="btn btn-primary btn-block" id="btn-print">Télécharger en PDF</button>
+          <p class="hint">Dans la fenêtre qui s'ouvre, choisissez « Enregistrer au format PDF ».</p>
+          <button type="button" class="btn btn-ghost btn-block" id="btn-share">Copier le lien de cette version</button>
+          <p class="hint" id="share-feedback" role="status"></p>
+        </div>
+
+        <div class="panel-links">
+          <button type="button" class="link-btn" id="btn-reset">Revenir à la sélection par défaut</button>
+        </div>
+      </aside>
+    </div>
+
+    <nav class="step-nav" aria-label="Navigation entre étapes">
+      <a class="btn btn-ghost" href="../projets/index.html">← Projets</a>
+      <!-- Suite du site (fiches de travail) : pas encore en ligne -->
+      <div class="suite">
+        <button type="button" class="btn btn-primary btn-suite" id="btn-suite" aria-expanded="false" aria-controls="suite-message">
+          Ce n'est pas fini ! <span class="badge-bientot">Bientôt</span>
+        </button>
+        <p class="suite-message" id="suite-message" hidden>
+          Il y a une suite après le CV. Elle est en construction, revenez bientôt.
+        </p>
+      </div>
+    </nav>
+  </main>
+
+  <noscript><p class="noscript">Ce site a besoin de JavaScript pour fonctionner.</p></noscript>
+
+  <!-- Contenu -->
+  <script src="../commun/data/profil.js"></script>
+  <script src="../commun/data/competences.js"></script>
+  <script src="../commun/data/parcours.js"></script>
+  <script src="../commun/data/projets.js"></script>
+  <!-- Commun -->
+  <!-- Bibliothèque externe : dessin du QR code du site -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+  <script src="../commun/js/etat.js"></script>
+  <script src="../commun/js/rendu-cv.js"></script>
+  <script src="../commun/js/contact.js"></script>
+  <script src="../commun/js/barre-progression.js"></script>
+  <!-- Propre à la page -->
+  <script src="cv.js"></script>
+</body>
+</html>

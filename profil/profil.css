@@ -1,0 +1,56 @@
+/* PAGE PROFIL */
+
+/* Présentation */
+.presentation { margin-bottom: 40px; padding-left: 20px; border-left: 3px solid var(--accent); }
+.dispo {
+  display: inline-flex; align-items: center; gap: 8px; margin-bottom: 12px;
+  padding: 4px 12px; border-radius: 99px; background: color-mix(in srgb, var(--ok) 15%, transparent);
+  color: var(--ok); font-size: 13px; font-weight: 600;
+}
+.dispo::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
+.quote { font: 400 20px/1.6 var(--serif); color: var(--ink); max-width: 62ch; }
+
+/* "Vous cherchez plutôt…" */
+.radio-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.radio {
+  display: flex; align-items: flex-start; gap: 12px; padding: 16px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  transition: all .15s ease;
+}
+/* Le vrai bouton radio est masqué : seul le rond .pick-dot est visible */
+.radio { position: relative; cursor: pointer; }
+.radio input { position: absolute; opacity: 0; width: 1px; height: 1px; pointer-events: none; }
+.radio:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+.radio strong { display: block; font-weight: 600; }
+.radio small { display: block; font-size: 13px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+.radio:hover { border-color: var(--muted); }
+.pick-dot { flex: none; width: 20px; height: 20px; margin-top: 1px; border-radius: 50%; border: 1.5px solid var(--line); background: var(--surface); transition: all .15s ease; }
+.radio:has(input:checked) { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.radio:has(input:checked) .pick-dot { border: 6px solid var(--accent); }
+
+/* Informations (non modifiables) */
+.infos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.info { padding: 20px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.info h2 { font: 600 18px var(--serif); margin-bottom: 12px; }
+.info-list { margin: 0; display: grid; gap: 8px; }
+.info-list div { display: flex; justify-content: space-between; gap: 16px; padding-bottom: 8px; border-bottom: 1px solid var(--line); font-size: 14px; }
+.info-list div:last-child { border-bottom: 0; padding-bottom: 0; }
+.info-list dt { color: var(--muted); }
+.info-list dd { margin: 0; font-weight: 500; text-align: right; overflow-wrap: anywhere; }
+.info-list a { text-decoration: none; }
+.info-list a:hover { color: var(--accent); }
+.niveau { display: inline-block; min-width: 34px; padding: 1px 8px; border-radius: 6px; background: var(--accent-soft); color: var(--accent); font-weight: 700; font-size: 13px; text-align: center; }
+.info-tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.info-tags li { padding: 6px 12px; border-radius: 99px; background: var(--surface-2); font-size: 14px; }
+.objectifs { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.objectifs h3 { font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+.objectifs ul { margin: 0; padding-left: 18px; font-size: 14px; color: var(--muted); }
+.objectifs li + li { margin-top: 3px; }
+
+@media (max-width: 900px) {
+  .radio-list { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 640px) {
+  .infos, .objectifs { grid-template-columns: minmax(0, 1fr); }
+  .quote { font-size: 18px; }
+}

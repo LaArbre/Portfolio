@@ -1,0 +1,48 @@
+/* =========================================================
+   PAGES D'ÉTAPE : mise en page, éléments cochables,
+   aperçu en direct
+   ========================================================= */
+.workspace { max-width: 1040px; }
+
+
+.block { margin-bottom: 34px; }
+.block-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; margin-bottom: 14px; }
+.block-head h2 { font: 600 20px var(--serif); }
+.block-head p { color: var(--muted); font-size: 14px; margin-top: 3px; }
+
+/* ---------- Interrupteur discret "Sur le CV" ---------- */
+.cv-toggle { flex: none; position: relative; cursor: pointer; font-size: 12px; font-weight: 600; }
+.cv-toggle input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.cv-toggle span { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 99px; white-space: nowrap; transition: all .15s ease; }
+.cv-toggle svg { width: 12px; height: 12px; }
+.cv-toggle-on { background: var(--accent-soft); color: var(--accent); }
+.cv-toggle-off { border: 1px dashed var(--line); color: var(--muted); }
+.cv-toggle:hover .cv-toggle-off { border-color: var(--accent); color: var(--accent); }
+.cv-toggle:has(input:checked) .cv-toggle-off,
+.cv-toggle:not(:has(input:checked)) .cv-toggle-on { display: none; }
+.cv-toggle:has(input:focus-visible) span { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+
+/* ---------- Cartes de contenu ---------- */
+.cards { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; }
+.card {
+  display: flex; gap: 16px; align-items: flex-start;
+  padding: 18px 20px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  scroll-margin-top: calc(var(--topbar-h) + 20px);
+}
+.card-body { flex: 1; min-width: 0; transition: opacity .2s ease; }
+.card:not(:has(input:checked)) .card-body { opacity: .7; }
+.card:target { animation: cible 1.8s ease-out; }
+@keyframes cible { 0%, 30% { box-shadow: 0 0 0 4px var(--accent-soft), 0 0 0 5px var(--accent); } }
+.card-top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 2px 12px; }
+.card-top strong { font: 600 18px/1.25 var(--serif); }
+.date { font-size: 13px; color: var(--muted); white-space: nowrap; }
+.card-sub { color: var(--accent); font-size: 14px; font-weight: 500; margin-top: 2px; }
+.card p { color: var(--muted); font-size: 14px; margin-top: 8px; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+.tags span { font-size: 12px; padding: 2px 9px; border-radius: 99px; background: var(--surface-2); color: var(--muted); }
+
+@media (max-width: 640px) {
+  .card { flex-direction: column-reverse; padding: 16px; gap: 10px; }
+  .card .cv-toggle { align-self: flex-end; }
+}

@@ -1,0 +1,76 @@
+/* PAGE CV (résultat final) */
+
+.final { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 40px; align-items: start; }
+.final-stage { max-width: 794px; width: 100%; }
+.final-panel { position: sticky; top: calc(var(--topbar-h) + 28px); display: grid; gap: 16px; }
+
+.panel-card { padding: 20px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); display: grid; gap: 12px; }
+.panel-card h2 { font: 600 18px var(--serif); }
+
+.summary { list-style: none; margin: 0; padding: 0; }
+.summary li { display: grid; grid-template-columns: 1fr auto auto; gap: 14px; align-items: baseline; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14px; }
+.sum-n { font-weight: 600; }
+.sum-n small { color: var(--muted); font-weight: 400; }
+.summary a { font-size: 13px; color: var(--muted); }
+.summary a:hover { color: var(--accent); }
+
+.hint { font-size: 13px; color: var(--muted); }
+.hint:empty { display: none; }
+.share-input { width: 100%; margin-top: 6px; padding: 6px 8px; font: 12px var(--font); border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--ink); }
+
+.panel-links { display: flex; flex-direction: column; gap: 8px; padding: 0 4px; font-size: 13px; }
+.panel-links a { color: var(--muted); }
+
+/* Interrupteur "détails" */
+.switch { display: flex; align-items: center; gap: 12px; font-size: 14px; cursor: pointer; padding-top: 4px; }
+.switch input { position: absolute; opacity: 0; }
+.switch-ui { flex: none; position: relative; width: 38px; height: 22px; border-radius: 99px; background: var(--line); transition: background .2s ease; }
+.switch-ui::after { content: ""; position: absolute; top: 3px; left: 3px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform .2s ease; }
+.switch input:checked + .switch-ui { background: var(--accent); }
+.switch input:checked + .switch-ui::after { transform: translateX(16px); }
+.switch input:focus-visible + .switch-ui { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Indicateur "tient sur une page" */
+.page-info { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; padding: 10px 12px; border-radius: 10px; background: var(--surface-2); }
+.page-info:empty { display: none; }
+.page-info svg { flex: none; width: 16px; height: 16px; margin-top: 1px; }
+.page-info.is-ok { color: var(--ok); }
+.page-info.is-warn { color: var(--warn); }
+.dot-warn { flex: none; width: 16px; height: 16px; border-radius: 50%; background: var(--warn); color: var(--surface); font: 700 11px/16px var(--font); text-align: center; margin-top: 1px; }
+
+.step-nav { margin-top: 40px; align-items: flex-start; }
+
+/* Bouton "Ce n'est pas fini !" (teaser de la suite) */
+.suite { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; max-width: 340px; }
+.btn-suite { position: relative; }
+.badge-bientot {
+  font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 99px; background: var(--accent); color: var(--accent-ink);
+}
+.btn-suite:hover .badge-bientot { background: var(--accent-ink); color: var(--accent); }
+.suite-message {
+  font-size: 14px; color: var(--muted); text-align: right;
+  padding: 10px 14px; border: 1px dashed var(--accent); border-radius: 10px; background: var(--surface);
+}
+.wiggle { animation: wiggle .5s ease; }
+@keyframes wiggle {
+  20% { transform: rotate(-3deg); }
+  40% { transform: rotate(3deg); }
+  60% { transform: rotate(-2deg); }
+  80% { transform: rotate(1deg); }
+}
+@media (max-width: 640px) {
+  .step-nav { flex-direction: column-reverse; align-items: stretch; }
+  .suite { max-width: none; align-items: stretch; }
+  .suite-message { text-align: left; }
+}
+
+@media (max-width: 1100px) {
+  .final { grid-template-columns: minmax(0, 1fr); }
+  .final-panel { position: static; order: -1; grid-template-columns: 1fr 1fr; }
+  .panel-links { grid-column: 1 / -1; flex-direction: row; justify-content: space-between; }
+}
+@media (max-width: 640px) {
+  .final-panel { grid-template-columns: minmax(0, 1fr); }
+  .panel-links { flex-direction: column; }
+}
