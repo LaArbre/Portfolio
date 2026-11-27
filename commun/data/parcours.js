@@ -102,7 +102,6 @@ CV_DATA.experiences = [
 
 CV_DATA.formations = [
   { id: "f-bts", title: "BTS SIO — option SLAM", school: "Lycée René Cassin, Strasbourg · Développement d'applications", date: "2024 – 2026", on: true },
-  { id: "f-cnam", title: "Licence générale Informatique — parcours Cybersécurité", school: "CNAM (LG02501A)", date: "Admis en 2026", on: false },
   { id: "f-mc", title: "MC Services Numériques aux Organisations", school: "Bureautique et e-réputation", date: "2023 – 2024", on: false },
   { id: "f-bac", title: "Bac STI2D — option SIN", school: "Systèmes d'information et numérique", date: "2020 – 2023", on: true }
 ];
