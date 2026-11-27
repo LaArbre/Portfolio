@@ -29,3 +29,7 @@
 @media (max-width: 900px) {
   .skill-grid { grid-template-columns: minmax(0, 1fr); }
 }
+@media (max-width: 640px) {
+  /* Même marge intérieure que les autres cartes sur téléphone */
+  .skill { padding: var(--e-4); }
+}

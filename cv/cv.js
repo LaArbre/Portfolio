@@ -7,9 +7,8 @@
   const CV = window.CV;
   const { state, esc, $ } = CV;
 
-  /* Arrivée par un lien partagé : cv/?c=... */
-  const code = new URLSearchParams(location.search).get("c");
-  if (code && CV.decoder(code)) {
+  /* Arrivée par un lien partagé : cv/?s=...&a=...&d=... (ou l'ancien cv/?c=...) */
+  if (CV.lireLienPartage(new URLSearchParams(location.search))) {
     history.replaceState(null, "", location.pathname);
     CV.dessinerBarre();
   }
@@ -40,7 +39,7 @@
     CV.updatePreviews();
     resume();
     infoPages();
-    CV.optique();
+    CV.optique($(".final-panel"));
   }
 
   /* ---------- Actions ---------- */
@@ -62,7 +61,7 @@
   });
 
   $("#btn-share").addEventListener("click", async () => {
-    const url = `${location.origin}${location.pathname}?c=${CV.encoder()}`;
+    const url = CV.lienPartage(location.href.split(/[?#]/)[0]);
     const fb = $("#share-feedback");
     try {
       await navigator.clipboard.writeText(url);
@@ -90,7 +89,7 @@
   });
 
   // Les polices changent la hauteur du CV : on recalcule une fois chargées
-  if (document.fonts) document.fonts.ready.then(infoPages);
+  if (document.fonts) document.fonts.ready.then(() => { infoPages(); CV.optique($(".final-panel")); });
 
   rafraichir();
 })();

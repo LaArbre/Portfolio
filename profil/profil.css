@@ -12,7 +12,7 @@
 /* "Vous cherchez plutôt…" */
 .radio-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--e-4); }
 .radio {
-  display: flex; align-items: center; gap: var(--e-3); padding: var(--e-4) var(--e-5) var(--e-4) var(--e-4);
+  display: flex; align-items: center; gap: var(--e-3); padding: var(--e-5);
   background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
   transition: all .15s ease;
 }
@@ -52,4 +52,6 @@
 @media (max-width: 640px) {
   .infos, .objectifs { grid-template-columns: minmax(0, 1fr); }
   .quote { font-size: 18px; }
+  /* Même marge intérieure que les autres cartes sur téléphone */
+  .info, .radio { padding: var(--e-4); }
 }

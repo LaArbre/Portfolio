@@ -22,10 +22,10 @@
 
     <section class="block">
       <div class="block-head"><div>
-        <h2>Vous cherchez plutôt…</h2>
+        <h2 id="titre-accroche">Vous cherchez plutôt…</h2>
         <p>Votre réponse devient le titre de votre CV.</p>
       </div></div>
-      <div class="radio-list" role="radiogroup">${p.accroches.map(a => `
+      <div class="radio-list" role="radiogroup" aria-labelledby="titre-accroche">${p.accroches.map(a => `
         <label class="pick radio">
           <input type="radio" name="accroche" value="${a.id}" ${a.id === state.accroche ? "checked" : ""}>
           <span class="pick-dot"></span>
@@ -66,5 +66,4 @@
   });
 
   CV.demarrerEtape();
-  CV.optique();
 })();

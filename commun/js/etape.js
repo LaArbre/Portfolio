@@ -34,13 +34,16 @@
 
   /* ---------- Événements ---------- */
   document.addEventListener("change", e => {
-    if (e.target.matches("input[data-id]")) CV.setMany([e.target.dataset.id], e.target.checked);
+    if (!e.target.matches("input[data-id]")) return;
+    CV.setMany([e.target.dataset.id], e.target.checked);
+    // Seule la pastille cliquée change de texte : on ne recentre qu'elle
+    CV.optique(e.target.closest(".cv-toggle"));
   });
 
   /* À appeler par chaque page, une fois son contenu affiché */
   CV.demarrerEtape = () => {
     CV.updatePreviews();
-    CV.optique();
+    // (le centrage optique de toute la page est fait une seule fois, juste avant l'affichage : voir etat.js)
     // Lien vers un élément précis (ex. parcours/index.html#x-jgsi) : le contenu
     // est créé en JS, on fait donc défiler jusqu'à lui une fois affiché
     if (location.hash.length > 1) {

@@ -25,13 +25,15 @@
 
   topbar.classList.add("topbar");
   topbar.innerHTML = `
-    <a class="brand" href="${CV.urlAccueil}" aria-label="Retour à l'accueil"><span class="optique">ES</span></a>
+    <a class="brand" href="${CV.urlAccueil}" aria-label="Accueil — ${esc(CV_DATA.profil.prenom)} ${esc(CV_DATA.profil.nom)}">
+      <span class="brand-long">${esc(CV_DATA.profil.prenom)} <b>${esc(CV_DATA.profil.nom)}</b></span>
+      <span class="brand-court" aria-hidden="true">${esc(CV_DATA.profil.prenom[0])}<b>${esc(CV_DATA.profil.nom[0])}</b></span>
+    </a>
     <nav class="stepper" aria-label="Étapes du CV">
       <div class="stepper-track" aria-hidden="true"><div class="stepper-fill"></div></div>
       <ol></ol>
     </nav>
-    <button type="button" class="btn btn-ghost topbar-contact" data-contact aria-label="Me contacter">${CV.iconeContact || ""}<span>Me contacter</span></button>
-    <div class="progress-text"></div>`;
+    <button type="button" class="btn btn-ghost topbar-contact" data-contact aria-label="Me contacter">${CV.iconeContact || ""}<span>Me contacter</span></button>`;
 
   /* ---------- Les cases : une par étape ---------- */
   const liste = $(".stepper ol", topbar);
@@ -45,7 +47,7 @@
   const liCV = $('li[data-key="cv"]', liste);
   if (avecApercu) {
     liCV.insertAdjacentHTML("beforeend", `
-      <div class="apercu-pop" id="apercu-pop" role="dialog" aria-label="Aperçu du CV">
+      <div class="apercu-pop" id="apercu-pop">
         <div class="apercu-pop-head">
           <span><span class="live-dot"></span>Aperçu en direct</span>
           <a href="${CV.urlEtape("cv")}">Ouvrir le CV →</a>
@@ -67,6 +69,9 @@
   /* Écran tactile (pas de survol) : 1er toucher = aperçu, le lien "Ouvrir le CV" mène à la page */
   const tactile = window.matchMedia("(hover: none)").matches;
   if (avecApercu) {
+    // L'aperçu n'est redessiné qu'au moment où il va s'afficher
+    ["pointerenter", "focusin", "touchstart"].forEach(t =>
+      liCV.addEventListener(t, CV.rafraichirApercus, { passive: true }));
     liCV.addEventListener("click", e => {
       const lien = e.target.closest("li > a");
       if (tactile && lien && !liCV.classList.contains("is-open")) {
@@ -81,12 +86,14 @@
   /* Une seule fois par visite : l'aperçu "sort" un instant de la bulle puis s'y range,
      pour montrer qu'il est là sans rien avoir à expliquer */
   function teaser() {
-    if (!avecApercu || CV.reduceMotion) return;
+    // Pas sur la 1re étape : le visiteur découvre d'abord la page, l'aperçu vient ensuite
+    if (!avecApercu || CV.reduceMotion || indexCourant < 1) return;
     try {
       if (sessionStorage.getItem("cvb:teaser")) return;
       sessionStorage.setItem("cvb:teaser", "1");
     } catch { /* pas de stockage : on montre quand même */ }
     setTimeout(() => {
+      CV.rafraichirApercus();
       liCV.classList.add("is-teaser");
       setTimeout(() => liCV.classList.remove("is-teaser"), 1800);
     }, 1200);
@@ -102,7 +109,7 @@
       li.className = ["step", current && "is-current", visited && "is-visited", e.key === "cv" && "is-final",
         e.key === "cv" && avecApercu && "has-apercu", ouvert && "is-open"].filter(Boolean).join(" ");
       const lien = `
-          <a href="${CV.urlEtape(e.key)}" ${current ? 'aria-current="step"' : ""}>
+          <a href="${CV.urlEtape(e.key)}" ${current ? 'aria-current="step"' : ""} aria-label="Étape ${i + 1} : ${esc(e.label)}${visited && !current ? " (parcourue)" : ""}">
             <span class="step-dot">${visited && !current ? CV.CHECK : `<span class="optique">${i + 1}</span>`}${e.key === "cv" && avecApercu ? `<span class="dot-oeil">${OEIL}</span>` : ""}</span>
             <span class="step-label">${esc(e.label)}</span>
           </a>`;
@@ -116,7 +123,6 @@
 
     const done = CV.ETAPES_CONTENU.filter(e => state.visited.has(e.key)).length;
     const pct = Math.round((done / CV.ETAPES_CONTENU.length) * 100);
-    $(".progress-text", topbar).innerHTML = `<strong>${pct}&nbsp;%</strong><span>parcouru</span>`;
 
     // La ligne reste grise tant que tout n'est pas parcouru
     const fill = $(".stepper-fill", topbar);
@@ -165,7 +171,6 @@
   CV.dessinerBarre = dessiner;
   CV.onChange(dessiner);
   CV.onChange(signalerChangement);
-  CV.onChange(() => CV.optique());
   teaser();
 
   const doitAnimer = !state.celebre && CV.ETAPES_CONTENU.every(e => state.visited.has(e.key));

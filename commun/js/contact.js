@@ -65,7 +65,6 @@
       <span class="contact-retour" role="status"></span>
     </div>`;
   document.body.appendChild(dlg);
-  if (document.fonts) document.fonts.ready.then(() => CV.optique(dlg));
 
   const retour = dlg.querySelector(".contact-retour");
   let minuteur;

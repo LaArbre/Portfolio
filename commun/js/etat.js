@@ -100,24 +100,46 @@
     CV.notify(added);
   };
 
-  /* ---------- Lien partageable : sélection encodée dans l'URL ---------- */
-  CV.encoder = () => {
-    let bits = ALL_IDS.map(id => (state.sel.has(id) ? "1" : "0")).join("");
-    while (bits.length % 4) bits += "0";
-    let hex = "";
-    for (let i = 0; i < bits.length; i += 4) hex += parseInt(bits.slice(i, i + 4), 2).toString(16);
-    const acc = D.profil.accroches.findIndex(a => a.id === state.accroche);
-    return `${acc}${state.details ? 1 : 0}${hex}`;
+  /* ---------- Lien partageable : sélection encodée dans l'URL ----------
+     On écrit les id cochés eux-mêmes (et non leur position dans la liste) :
+     ajouter, retirer ou réordonner des éléments dans commun/data/ ne change
+     pas le sens des liens déjà envoyés. Un id disparu est simplement ignoré.
+     Format : ?s=s-sql.p-orm…&a=<id accroche>&d=1 */
+  CV.lienPartage = base => {
+    const q = new URLSearchParams();
+    q.set("s", ALL_IDS.filter(id => state.sel.has(id)).join("."));
+    q.set("a", state.accroche);
+    q.set("d", state.details ? "1" : "0");
+    return `${base}?${q.toString()}`;
   };
-  CV.decoder = code => {
+
+  /* Ancien format (?c=…, position des éléments en binaire) : encore lu
+     pour que les liens envoyés avant le changement de format restent valables */
+  function decoderAncien(code) {
     if (!/^\d[01][0-9a-f]+$/i.test(code)) return false;
     const acc = D.profil.accroches[+code[0]];
     const bits = [...code.slice(2)].map(c => parseInt(c, 16).toString(2).padStart(4, "0")).join("");
     state.sel = new Set(ALL_IDS.filter((id, i) => bits[i] === "1"));
     if (acc) state.accroche = acc.id;
     state.details = code[1] === "1";
-    CV.save();
     return true;
+  }
+
+  /* Lit la sélection dans l'adresse ; renvoie true si un CV partagé a été chargé */
+  CV.lireLienPartage = params => {
+    let ok = false;
+    if (params.has("s")) {
+      const ids = new Set(params.get("s").split(".").filter(Boolean));
+      state.sel = new Set(ALL_IDS.filter(id => ids.has(id)));
+      const acc = params.get("a");
+      if (D.profil.accroches.some(a => a.id === acc)) state.accroche = acc;
+      state.details = params.get("d") !== "0";
+      ok = true;
+    } else if (params.has("c")) {
+      ok = decoderAncien(params.get("c"));
+    }
+    if (ok) CV.save();
+    return ok;
   };
 
   /* ---------- Petits utilitaires ---------- */
@@ -177,7 +199,7 @@
     // (pas les boutons des barres : leur hauteur ne doit jamais bouger)
     ".btn:not(.step-nav .btn):not(.topbar-contact)", ".cv-toggle-on", ".cv-toggle-off", ".tags span", ".skill-usages li span",
     ".certifs li", ".info-tags li", ".badge-bientot", ".pastille-lien",
-    ".intro-visual-link > span", ".step-dot", ".niveau", ".dot-warn", ".contact-close", ".brand"
+    ".intro-visual-link > span", ".step-dot", ".niveau", ".dot-warn", ".contact-close"
   ].join(",");
 
   function envelopper(racine) {
@@ -282,10 +304,11 @@
   }
   /* ---------- Fin du chargement ----------
      On attend que la page soit construite ET que les polices soient là
-     (au plus 1 s), on fait les derniers calculs, puis on révèle le contenu. */
+     (au plus 0,4 s : elles sont hébergées sur le site et préchargées,
+     et au-delà la police de secours s'affiche), puis on révèle le contenu. */
   document.addEventListener("DOMContentLoaded", () => {
     const polices = document.fonts ? document.fonts.ready : Promise.resolve();
-    const delai = new Promise(r => setTimeout(r, 1000));
+    const delai = new Promise(r => setTimeout(r, 400));
     Promise.race([polices, delai]).then(() => requestAnimationFrame(() => {
       CV.optique();
       const html = document.documentElement;
@@ -297,8 +320,13 @@
   // Les polices web changent les mesures : on recalcule une fois chargées,
   // et après chaque redimensionnement de la fenêtre (éléments masqués / affichés)
   if (document.fonts) document.fonts.ready.then(() => CV.optique());
+  // (seulement si la LARGEUR change : sur mobile, la barre d'adresse qui se replie
+  // en défilant déclenche "resize" sans rien changer à la mise en page)
   let minuteurOptique;
+  let largeur = window.innerWidth;
   window.addEventListener("resize", () => {
+    if (window.innerWidth === largeur) return;
+    largeur = window.innerWidth;
     clearTimeout(minuteurOptique);
     minuteurOptique = setTimeout(() => CV.optique(), 150);
   });

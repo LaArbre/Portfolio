@@ -4,7 +4,7 @@
 .final-stage { max-width: 794px; width: 100%; }
 .final-panel { position: sticky; top: calc(var(--topbar-h) + var(--e-6)); display: grid; gap: var(--e-4); }
 
-.panel-card { padding: var(--e-5); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); display: grid; gap: var(--e-3); }
+.panel-card { align-content: start; padding: var(--e-5); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); display: grid; gap: var(--e-3); }
 .panel-card h2 { font: 600 18px var(--serif); }
 
 .summary { list-style: none; margin: 0; padding: 0; }
@@ -72,6 +72,12 @@
   .panel-links { grid-column: 1 / -1; flex-direction: row; justify-content: space-between; }
 }
 @media (max-width: 640px) {
-  .final-panel { grid-template-columns: minmax(0, 1fr); }
+  /* Sur téléphone : le bouton PDF d'abord, puis le CV, puis le détail du contenu
+     (le panneau "s'ouvre" pour que ses cartes se rangent autour du CV) */
+  .final { gap: var(--e-4); }
+  .final-panel { display: contents; }
+  .final-panel > .panel-card:nth-child(2) { order: -2; }
+  .panel-card { padding: var(--e-4); }
+  .final-stage { order: -1; margin-bottom: var(--e-3); }
   .panel-links { flex-direction: column; }
 }

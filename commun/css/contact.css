@@ -40,7 +40,14 @@
 .topbar-contact svg { width: 17px; height: 17px; }
 
 @media (max-width: 900px) {
-  .topbar-contact { width: 40px; height: 40px; padding: 0; }
+  /* Écran étroit : l'icône seule, sans rond autour (pour ne pas ressembler
+     à une bulle de l'étapier), séparée par un filet comme le logo */
+  .topbar-contact {
+    width: auto; height: 40px; padding: 0 0 0 14px; border: 0; border-left: 1px solid var(--line);
+    border-radius: 0; background: none; color: var(--muted);
+  }
+  .topbar-contact:hover { color: var(--accent); }
+  .topbar-contact svg { width: 22px; height: 22px; }
   .topbar-contact .optique, .topbar-contact > span { display: none; }
 }
 @media (max-width: 480px) {

@@ -5,5 +5,4 @@
 (() => {
   "use strict";
   window.CV.updatePreviews();
-  window.CV.optique();
 })();

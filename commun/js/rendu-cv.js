@@ -134,9 +134,20 @@
   }
 
   /* Remplit tous les éléments .js-preview de la page */
-  CV.updatePreviews = (flashIds = []) => {
-    const html = CV.renderCV();
+  /* Un aperçu caché (celui de la bulle "Votre CV" tant qu'elle n'est pas ouverte)
+     n'est pas redessiné à chaque coche : il est marqué "périmé" et redessiné
+     seulement au moment où il s'affiche (voir CV.rafraichirApercus). */
+  const estCache = frame => {
+    const pop = frame.closest(".apercu-pop");
+    return pop && getComputedStyle(pop).visibility === "hidden";
+  };
+
+  CV.updatePreviews = (flashIds = [], { tout = false } = {}) => {
+    let html = null;
     $$(".js-preview").forEach(frame => {
+      if (!tout && estCache(frame)) { frame.dataset.perime = "1"; return; }
+      delete frame.dataset.perime;
+      html ??= CV.renderCV();
       frame.innerHTML = `<div class="cv-scaler">${html}</div>`;
       fit(frame);
       if (!frame.dataset.observed) { resizeObs.observe(frame); frame.dataset.observed = "1"; }
@@ -144,6 +155,11 @@
     });
   };
   CV.onChange(added => CV.updatePreviews(added));
+
+  /* Redessine les aperçus marqués périmés (appelé juste avant d'en afficher un) */
+  CV.rafraichirApercus = () => {
+    if ($$(".js-preview[data-perime]").length) CV.updatePreviews([], { tout: true });
+  };
 
   /* ---------- Impression / export PDF ---------- */
   const printRoot = document.createElement("div");
