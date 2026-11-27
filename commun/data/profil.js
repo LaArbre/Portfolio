@@ -12,8 +12,8 @@ CV_DATA.profil = {
   // Le visiteur indique ce qu'il cherche : ça devient le titre du CV
   // (la première est celle affichée par défaut)
   accroches: [
-    { id: "acc-poly", label: "Un profil back-end & sécurité", text: "Back-end, bases de données & cybersécurité" },
-    { id: "acc-dev", label: "Un développeur back-end", text: "Développeur back-end & bases de données" },
+    { id: "acc-poly", label: "Un profil back-end et sécurité", text: "Développeur back-end, bases de données et cybersécurité" },
+    { id: "acc-dev", label: "Un développeur back-end", text: "Développeur back-end et bases de données" },
     { id: "acc-cyber", label: "Un profil cybersécurité", text: "Profil junior en cybersécurité" }
   ],
 
@@ -21,7 +21,7 @@ CV_DATA.profil = {
   disponibilite: "Disponible immédiatement",
 
   resume:
-    "Titulaire d'un BTS SIO option SLAM (2026), je me suis spécialisé dans le développement back-end, les bases de données et la cybersécurité. Polyvalent entre développement et infrastructure réseau, je suis ouvert aux opportunités : premier emploi, alternance ou mission.",
+    "Diplômé d'un BTS SIO option SLAM en 2026, je développe principalement en Python et je travaille sur des bases de données relationnelles. Mes stages m'ont aussi amené à intervenir sur des réseaux et des serveurs Linux et Windows. Je recherche un premier emploi, une alternance ou une mission en développement back-end ou en cybersécurité.",
 
   // Adresse du site : encodée dans le QR code du bandeau du CV
   site: "https://laarbre.github.io/Portfolio/",
@@ -42,14 +42,14 @@ CV_DATA.profil = {
   ],
 
   loisirs: [
-    { id: "h-dev", name: "Développement perso" },
+    { id: "h-dev", name: "Projets de développement personnels" },
     { id: "h-esc", name: "Escalade" },
     { id: "h-flute", name: "Flûte traversière" }
   ],
 
   // Affiché sur la page Profil uniquement (pas sur le CV)
   objectifs: {
-    court: ["Trouver ma première expérience après le BTS : emploi ou alternance", "Approfondir le back-end et les bases de données", "Approfondir la cybersécurité"],
-    long: ["Me spécialiser en back-end et bases de données", "Évoluer vers la cybersécurité", "Me former en continu"]
+    court: ["Obtenir un premier poste ou une alternance après le BTS", "Progresser en développement back-end et en bases de données", "Renforcer mes compétences en cybersécurité"],
+    long: ["Me spécialiser en back-end et en bases de données", "Évoluer vers un poste en cybersécurité", "Continuer à me former"]
   }
 };

@@ -5,7 +5,6 @@
      usages  : où je l'ai utilisée (id d'une expérience, d'une
                formation ou d'un projet) -> la date s'affiche seule
      on      : sur le CV par défaut ?
-   ⚠ Les descriptions sont un premier jet à relire.
    ========================================================= */
 window.CV_DATA = window.CV_DATA || {};
 
@@ -16,12 +15,12 @@ CV_DATA.competences = [
     items: [
       {
         id: "s-sql", name: "SQL — MySQL, SQLite", on: true,
-        desc: "Conception de bases relationnelles et écriture de requêtes.",
+        desc: "Modélisation de bases relationnelles et écriture de requêtes.",
         usages: ["p-comm", "p-pwd", "p-notes", "f-bts"]
       },
       {
         id: "s-mvc", name: "MVC & ORM", on: true,
-        desc: "Organiser une application en couches ; j'ai écrit mon propre ORM en Python.",
+        desc: "Architecture d'application en couches ; développement d'un ORM en Python.",
         usages: ["p-orm", "f-bts"]
       }
     ]
@@ -32,32 +31,32 @@ CV_DATA.competences = [
     items: [
       {
         id: "s-py", name: "Python", on: true,
-        desc: "Mon langage principal : automatisation, bases de données SQLite, bots et outils d'IA.",
+        desc: "Langage principal : scripts d'automatisation, bases SQLite, bots, outils d'IA.",
         usages: ["x-tech", "x-jgsi", "p-agent", "p-orm", "p-pwd", "p-bot"]
       },
       {
         id: "s-js", name: "JavaScript", on: true,
-        desc: "Interfaces web dynamiques, en entreprise comme en projet personnel.",
+        desc: "Interfaces web, en stage et en projet personnel.",
         usages: ["x-md6", "p-music"]
       },
       {
         id: "s-php", name: "PHP", on: true,
-        desc: "Développement web côté serveur, structuré en modèle MVC.",
+        desc: "Développement côté serveur selon le modèle MVC.",
         usages: ["f-bts"]
       },
       {
         id: "s-html", name: "HTML / CSS", on: true,
-        desc: "Structure et mise en page d'interfaces web, dont ce portfolio.",
+        desc: "Intégration d'interfaces web, dont ce portfolio.",
         usages: ["p-music", "f-bts"]
       },
       {
         id: "s-bash", name: "Bash", on: true,
-        desc: "Scripts d'automatisation et administration de machines Linux.",
+        desc: "Scripts d'automatisation et administration de serveurs Linux.",
         usages: ["x-jgsi", "x-md6"]
       },
       {
         id: "s-autres", name: "Java, C++, Windev, PowerShell", on: false,
-        desc: "Langages déjà pratiqués en formation, que je peux reprendre rapidement.",
+        desc: "Langages étudiés en formation.",
         usages: ["f-bts"]
       }
     ]
@@ -68,12 +67,12 @@ CV_DATA.competences = [
     items: [
       {
         id: "s-crypto", name: "Hachage, salage, chiffrement", on: true,
-        desc: "Protéger des mots de passe et des données stockées.",
+        desc: "Protection des mots de passe et des données stockées.",
         usages: ["p-pwd", "p-notes"]
       },
       {
         id: "s-rgpd", name: "RGPD", on: true,
-        desc: "Obligations d'une application qui traite des données personnelles, référentiels ANSSI et CNIL.",
+        desc: "Obligations liées aux données personnelles ; recommandations de l'ANSSI et de la CNIL.",
         usages: ["f-bts"]
       },
       {
@@ -89,17 +88,17 @@ CV_DATA.competences = [
     items: [
       {
         id: "s-linux", name: "Linux, Windows & virtualisation", on: true,
-        desc: "Mise en place et administration de serveurs, de postes et de machines virtuelles.",
+        desc: "Installation et administration de serveurs, de postes et de machines virtuelles.",
         usages: ["x-jgsi", "p-music"]
       },
       {
         id: "s-reseau", name: "Réseau — IP, SSH, FTP, Nmap", on: true,
-        desc: "Adressage, accès distants et analyse d'un réseau, sécurisation d'infrastructure.",
+        desc: "Adressage IP, accès à distance, analyse et sécurisation d'un réseau.",
         usages: ["x-jgsi"]
       },
       {
         id: "s-git", name: "Git & GitHub", on: true,
-        desc: "Versionner mon code et publier mes projets.",
+        desc: "Gestion de versions et publication de mes projets.",
         usages: ["p-orm", "p-agent", "p-bklight"]
       }
     ]
@@ -110,12 +109,12 @@ CV_DATA.competences = [
     items: [
       {
         id: "s-vba", name: "Excel & macros VBA", on: false,
-        desc: "Automatiser l'analyse de données dans des tableurs.",
+        desc: "Automatisation de l'analyse de données dans Excel.",
         usages: ["x-md6"]
       },
       {
         id: "s-libre", name: "LibreOffice / OpenOffice", on: false,
-        desc: "Suites bureautiques libres, pratiquées notamment en MC SNO.",
+        desc: "Utilisées pendant la MC SNO.",
         usages: ["f-mc"]
       }
     ]

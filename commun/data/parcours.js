@@ -9,43 +9,42 @@ window.CV_DATA = window.CV_DATA || {};
 CV_DATA.experiences = [
   {
     id: "x-tech",
-    role: "Stage Développeur",
+    role: "Stage développeur",
     company: "TechAlchemy",
     date: "Janv. – févr. 2026",
     tags: ["Python", "IA"],
     bullets: [
-      "Conception et réalisation de plusieurs projets, dont des outils d'IA",
-      "Prise en compte des enjeux de sécurité propres aux technologies d'IA"
+      "Développement de plusieurs projets, dont des outils utilisant l'IA",
+      "Prise en compte des risques de sécurité liés à ces outils"
     ],
     on: true
   },
   {
     id: "x-jgsi",
-    role: "Stage Développeur & Réseau",
+    role: "Stage développeur et réseau",
     company: "JGSI — Strasbourg",
     date: "Juin – juillet 2025",
     tags: ["Python", "Bash", "Réseau", "Sécurité", "Linux / Windows"],
     bullets: [
-      "Gestion de projet : déploiement et optimisation de scripts d'automatisation",
-      "Administration réseau et de postes Linux et Windows",
-      "Mise en place de solutions de sécurisation réseau",
+      "Suivi du déploiement de scripts d'automatisation et de leur optimisation",
+      "Administration du réseau et de postes Linux et Windows",
+      "Mise en place de mesures de sécurisation du réseau",
       "Support technique et maintenance de l'infrastructure",
-      "Documentation technique des procédures"
+      "Rédaction de la documentation des procédures"
     ],
     on: true
   },
   {
     id: "x-md6",
-    role: "Stage Développement",
+    role: "Stage développeur",
     company: "MD6 — Entzheim",
     date: "Août 2024",
     tags: ["JavaScript", "Bash", "Excel / VBA"],
     bullets: [
       "Développement d'interfaces utilisateur en JavaScript",
-      "Automatisation de processus avec des scripts Bash",
-      "Macros Excel pour l'analyse de données",
-      "Maintenance corrective et évolutive d'applications",
-      "Prise en main d'une base de code existante et contribution à son évolution"
+      "Automatisation de tâches par scripts Bash",
+      "Création de macros Excel pour l'analyse de données",
+      "Maintenance corrective et évolutive sur une base de code existante"
     ],
     on: true
   },
@@ -56,8 +55,8 @@ CV_DATA.experiences = [
     date: "2025",
     tags: ["Relation client", "Travail en équipe"],
     bullets: [
-      "Encaissement et accueil de la clientèle",
-      "Mise en rayon et réassort, à un rythme soutenu"
+      "Encaissement et accueil des clients",
+      "Mise en rayon et réassort"
     ],
     on: false
   },
@@ -68,7 +67,7 @@ CV_DATA.experiences = [
     date: "Saisons 2023 et 2024",
     tags: ["Sécurité", "Accueil du public"],
     bullets: [
-      "Exploitation seul de la Bûche et en binôme du Didi-Raft",
+      "Conduite de la Bûche en autonomie et du Didi-Raft en binôme",
       "Sécurité des visiteurs, contrôle des accès et gestion des files d'attente"
     ],
     on: false
@@ -80,7 +79,7 @@ CV_DATA.experiences = [
     date: "2022",
     tags: ["Travaux", "Administratif"],
     bullets: [
-      "Travaux électriques et travaux de terrain",
+      "Petits travaux électriques et travaux d'entretien",
       "Entretien des espaces verts et des espaces publics",
       "Tâches administratives"
     ],
@@ -88,13 +87,13 @@ CV_DATA.experiences = [
   },
   {
     id: "x-alstom",
-    role: "Stage d'observation — Test & Validation",
+    role: "Stage d'observation",
     company: "Alstom — Reichshoffen",
     date: "2020",
     tags: ["Tests", "Systèmes embarqués"],
     bullets: [
-      "Tests des systèmes informatiques et numériques embarqués d'un train",
-      "Participation aux campagnes d'essais et rédaction de rapports"
+      "Découverte des tests des systèmes informatiques embarqués d'un train",
+      "Participation aux campagnes d'essais et à la rédaction des rapports"
     ],
     on: false
   }

@@ -18,7 +18,7 @@ CV_DATA.projets = [
     id: "p-agent",
     title: "AgentNLU",
     stack: "Python · NLP",
-    desc: "Prototype d'agent conversationnel avec compréhension du langage naturel.",
+    desc: "Prototype d'agent conversationnel qui interprète des demandes en langage naturel.",
     link: "https://github.com/laarbre/AgentNLU",
     on: true
   },
@@ -26,7 +26,7 @@ CV_DATA.projets = [
     id: "p-orm",
     title: "UniPyORM",
     stack: "Python · ORM",
-    desc: "ORM Python léger pour gérer simplement des bases relationnelles.",
+    desc: "ORM léger en Python pour manipuler des bases de données relationnelles.",
     link: "https://github.com/laarbre/UniPyORM",
     on: true
   },
@@ -35,7 +35,7 @@ CV_DATA.projets = [
     title: "Application de musique",
     year: "2024",
     stack: "JavaScript · VM serveur",
-    desc: "Application de streaming musical hébergée sur une VM serveur, menée seul de l'architecture à la mise en production.",
+    desc: "Application web d'écoute et de téléchargement de musique, hébergée sur une machine virtuelle. Réalisée seul, de la conception à la mise en ligne.",
     on: true
   },
   {
@@ -43,14 +43,14 @@ CV_DATA.projets = [
     title: "Traitement communication",
     year: "2025",
     stack: "Python · SQLite",
-    desc: "Collecte et archivage de données dans une base SQLite.",
+    desc: "Script de collecte et d'archivage de données dans une base SQLite.",
     on: false
   },
   {
     id: "p-notes",
     title: "Notes sécurisées",
     stack: "Python · Tkinter · SQLite",
-    desc: "Application de prise de notes avec authentification sécurisée.",
+    desc: "Application de prise de notes protégée par authentification.",
     on: false
   },
   {
@@ -58,7 +58,7 @@ CV_DATA.projets = [
     title: "Bot Discord",
     year: "2023",
     stack: "Python",
-    desc: "Robot qui gère les rôles, automatise des tâches et propose des activités sur un serveur.",
+    desc: "Gestion des rôles, automatisation de tâches et animations sur un serveur Discord.",
     on: false
   },
   {
