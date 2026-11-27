@@ -35,7 +35,7 @@ CV_DATA.projets = [
     title: "Application de musique",
     year: "2024",
     stack: "JavaScript · VM serveur",
-    desc: "Interface web pour télécharger et écouter de la musique hébergée sur un serveur personnel.",
+    desc: "Application de streaming musical hébergée sur une VM serveur, menée seul de l'architecture à la mise en production.",
     on: true
   },
   {
@@ -58,7 +58,7 @@ CV_DATA.projets = [
     title: "Bot Discord",
     year: "2023",
     stack: "Python",
-    desc: "Robot qui gère les rôles et propose des activités sur un serveur.",
+    desc: "Robot qui gère les rôles, automatise des tâches et propose des activités sur un serveur.",
     on: false
   },
   {

@@ -31,6 +31,7 @@ CV_DATA.profil = {
     { id: "c-ville", label: "Ville", value: "Strasbourg (67)", cv: true },
     { id: "c-tel", label: "Téléphone", value: "07 67 02 38 19", href: "tel:+33767023819", cv: true },
     { id: "c-mail", label: "Email", value: "eliospaeth.contact@gmail.com", href: "mailto:eliospaeth.contact@gmail.com", cv: true },
+    { id: "c-permis", label: "Permis", value: "Permis B, véhiculé" },
     { id: "c-github", label: "GitHub", value: "github.com/laarbre", href: "https://github.com/laarbre" }
   ],
 

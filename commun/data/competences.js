@@ -73,7 +73,7 @@ CV_DATA.competences = [
       },
       {
         id: "s-rgpd", name: "RGPD", on: true,
-        desc: "Obligations d'une application qui traite des données personnelles.",
+        desc: "Obligations d'une application qui traite des données personnelles, référentiels ANSSI et CNIL.",
         usages: ["f-bts"]
       },
       {
@@ -88,8 +88,8 @@ CV_DATA.competences = [
     label: "Système & réseau",
     items: [
       {
-        id: "s-linux", name: "Linux & virtualisation", on: true,
-        desc: "Mise en place et administration de serveurs et de machines virtuelles.",
+        id: "s-linux", name: "Linux, Windows & virtualisation", on: true,
+        desc: "Mise en place et administration de serveurs, de postes et de machines virtuelles.",
         usages: ["x-jgsi", "p-music"]
       },
       {
@@ -112,6 +112,11 @@ CV_DATA.competences = [
         id: "s-vba", name: "Excel & macros VBA", on: false,
         desc: "Automatiser l'analyse de données dans des tableurs.",
         usages: ["x-md6"]
+      },
+      {
+        id: "s-libre", name: "LibreOffice / OpenOffice", on: false,
+        desc: "Suites bureautiques libres, pratiquées notamment en MC SNO.",
+        usages: ["f-mc"]
       }
     ]
   }
